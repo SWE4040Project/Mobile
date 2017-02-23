@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "827431100476",
+    "firebase_url": "https://swe4040-b22f1.firebaseio.com",
+    "project_id": "swe4040-b22f1",
+    "storage_bucket": "swe4040-b22f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827431100476:android:36ed7c577c74bfdc",
+        "android_client_info": {
+          "package_name": "mobiledev.unb.clockin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827431100476-3b2h53cf9v0sc18anrj6ht7i5gmf72m7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGvaWcGyUd8LZSPTt3dwZuxXRzigH6Tl8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
