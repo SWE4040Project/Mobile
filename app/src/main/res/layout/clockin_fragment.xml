@@ -22,4 +22,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="96dp"
         android:id="@+id/textView2" />
+
+
+    <TextView
+        android:text="Latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/latitude"
+        android:layout_below="@+id/clockin_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp" />
+
+    <TextView
+        android:text="Longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/longitude"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/latitude"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Get Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/longitude"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:id="@+id/button_location" />
 </RelativeLayout>
