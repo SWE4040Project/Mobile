@@ -21,7 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ClockinActivity extends Activity {
+public class TestRestActivity extends Activity {
 
     private static String TAG = MainActivity.class.getSimpleName();
     private Button json_button;
@@ -38,7 +38,7 @@ public class ClockinActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.clock_in_activity);
+        setContentView(R.layout.test_rest_activity);
 
         json_button = (Button) findViewById(R.id.json_button);
         auth_button = (Button) findViewById(R.id.auth_button);

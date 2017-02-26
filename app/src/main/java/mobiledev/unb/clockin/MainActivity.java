@@ -4,14 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,11 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,11 +105,17 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_myshifts) {
+            Log.i(TAG, "Load my shifts");
+            Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_schedule) {
+            Log.i(TAG, "Load weekly schedule");
+            Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Log.i(TAG, "Selecting nav_manage");
-            Intent intent = new Intent(MainActivity.this, ClockinActivity.class);
+            Intent intent = new Intent(MainActivity.this, TestRestActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_location) {
             Log.i(TAG, "Getting location");

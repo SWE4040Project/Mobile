@@ -7,6 +7,8 @@
     <string name="action_settings">Settings</string>
     <string name="menu_clockin">My Clock In</string>
     <string name="menu_location">Get Current Location</string>
+    <string name="my_shifts">My Shifts</string>
+    <string name="schedule">Weekly Schedule</string>
     <string name="push_notification">Activate Push Notifications</string>
 
 </resources>

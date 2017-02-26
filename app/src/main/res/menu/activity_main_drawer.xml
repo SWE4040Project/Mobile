@@ -11,9 +11,13 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="My Camera" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_myshifts"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="@string/my_shifts" />
+        <item
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/schedule" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

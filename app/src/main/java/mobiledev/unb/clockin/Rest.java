@@ -22,7 +22,7 @@ public class Rest {
 
     private static final String TAG = Rest.class.getSimpleName();
 
-    public static final String BASE_URL = "https://swe4040.herokuapp.com/rest/"; //https://swe4040.herokuapp.com/rest/
+    public static final String BASE_URL = "http://192.168.2.15:8080/rest/"; //https://swe4040.herokuapp.com/rest/
 
     public static final String PATH_CLOCKIN = BASE_URL + "clockin/clockin";
     public static final String PATH_CLOCKOUT = BASE_URL + "clockin/clockout";
@@ -33,7 +33,7 @@ public class Rest {
     public static final String PATH_LOGIN = BASE_URL + "login";
     public static final String PATH_TEST_AUTH = BASE_URL + "clockin/testauth";
     public static final String PATH_JSON = BASE_URL + "json";
-
+    public static final String PATH_SCHEDULE = BASE_URL + "calendar/load";
 
 
     public static JsonObjectRequest get(Context context, String url, JSONObject params, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener){
