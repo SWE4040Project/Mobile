@@ -29,6 +29,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import static mobiledev.unb.clockin.R.id.clockin_time;
+
 /**
  * Created by Brent on 2017-02-13.
  */
@@ -88,6 +90,8 @@ public class ClockinFragment extends Fragment implements
                     Log.i(TAG, "clockin_button activated. Go to in_shift");
                     // Send the event to the host activity
                     mCallback.onReplaceFragmentAction(new InShiftFragment());
+
+
                 }
             });
         }

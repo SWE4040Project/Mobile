@@ -22,7 +22,7 @@ public class Rest {
 
     private static final String TAG = Rest.class.getSimpleName();
 
-    public static final String BASE_URL = "http://192.168.2.15:8080/rest/"; //https://swe4040.herokuapp.com/rest/
+    public static final String BASE_URL = "https://swe4040.herokuapp.com/rest/"; //https://swe4040.herokuapp.com/rest/
 
     public static final String PATH_CLOCKIN = BASE_URL + "clockin/clockin";
     public static final String PATH_CLOCKOUT = BASE_URL + "clockin/clockout";

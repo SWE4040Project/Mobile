@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clockin) {
             Log.i(TAG, "Clock in here.");
-            loadClockinFragment();
-
+            //loadClockinFragment();
+            onReplaceFragmentAction(new ClockinFragment());
         } else if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_myshifts) {
