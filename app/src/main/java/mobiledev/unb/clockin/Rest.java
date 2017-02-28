@@ -7,8 +7,10 @@ import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class Rest {
 
     private static final String TAG = Rest.class.getSimpleName();
 
-    public static final String BASE_URL = "http://192.168.2.15:8080/rest/"; //https://swe4040.herokuapp.com/rest/
+    public static final String BASE_URL = "https://swe4040.herokuapp.com/rest/"; //https://swe4040.herokuapp.com/rest/
 
     public static final String PATH_CLOCKIN = BASE_URL + "clockin/clockin";
     public static final String PATH_CLOCKOUT = BASE_URL + "clockin/clockout";
@@ -34,6 +36,7 @@ public class Rest {
     public static final String PATH_TEST_AUTH = BASE_URL + "clockin/testauth";
     public static final String PATH_JSON = BASE_URL + "json";
     public static final String PATH_SCHEDULE = BASE_URL + "calendar/load";
+    public static final String PATH_PUSH_NOTIFICATION = BASE_URL + "pushnote?token=";
 
 
     public static JsonObjectRequest get(Context context, String url, JSONObject params, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener){
@@ -48,6 +51,33 @@ public class Rest {
         JsonObjectRequest req = new JsonObjectRequest(
                 url,
                 params,
+                successListener,
+                errorListener
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(CustomVar.AUTHORIZATION, authToken);
+                params.put(CustomVar.XSRF_TOKEN, xToken);
+
+                return params;
+            }
+        };
+
+        return req;
+    }
+
+    public static JsonArrayRequest get(Context context, String url, Response.Listener<JSONArray> successListener, Response.ErrorListener errorListener){
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final String authToken = preferences.getString(CustomVar.AUTHORIZATION, "");
+        final String xToken = preferences.getString(CustomVar.XSRF_TOKEN, "");
+        if(authToken.equalsIgnoreCase("") || xToken.equalsIgnoreCase("")) {
+            Log.i(TAG, "Empty authToken or xToken");
+        }
+
+        JsonArrayRequest req = new JsonArrayRequest(
+                url,
                 successListener,
                 errorListener
         ) {

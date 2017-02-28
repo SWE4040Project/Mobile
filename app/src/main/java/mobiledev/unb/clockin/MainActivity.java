@@ -4,7 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -101,10 +103,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clockin) {
             Log.i(TAG, "Clock in here.");
-            loadClockinFragment();
+            //loadClockinFragment();
+            onReplaceFragmentAction(new ClockinFragment());
 
         } else if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Log.i(TAG, "Handle the camera");
+            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_myshifts) {
             Log.i(TAG, "Load my shifts");
             Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
@@ -121,21 +126,12 @@ public class MainActivity extends AppCompatActivity
             Log.i(TAG, "Getting location");
             onReplaceFragmentAction(new ClockinFragment());
         } else if (id == R.id.nav_send) {
-            getPushNotificationToken();
+            onReplaceFragmentAction(new PushNotificationFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void getPushNotificationToken(){
-
-            String tkn = FirebaseInstanceId.getInstance().getToken();
-            Toast.makeText(MainActivity.this, "Current token ["+tkn+"]",
-                    Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Token ["+tkn+"]");
-
     }
 
     private void loadClockinFragment(){

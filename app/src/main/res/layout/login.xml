@@ -54,7 +54,7 @@
             android:padding="12dp"
             android:text="Login"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:background="@color/accent_material_light"
+            android:background="@color/colorPrimary"
             />
 
         <TextView android:id="@+id/link_forgotpassword"

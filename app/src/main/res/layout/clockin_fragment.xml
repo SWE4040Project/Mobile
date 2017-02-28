@@ -12,7 +12,11 @@
         android:layout_marginTop="167dp"
         android:layout_width="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/button_location"
+        android:layout_alignEnd="@+id/button_location"
+        android:layout_alignLeft="@+id/button_location"
+        android:layout_alignStart="@+id/button_location"
+        android:background="@android:color/holo_green_light" />
 
     <TextView
         android:text="Clock in by clicking button below"
@@ -44,10 +48,12 @@
 
     <Button
         android:text="Get Location"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/longitude"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:id="@+id/button_location" />
+        android:id="@+id/button_location"
+        android:background="@color/colorPrimary"
+        android:layout_width="120dp" />
+
 </RelativeLayout>

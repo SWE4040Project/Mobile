@@ -3,6 +3,7 @@ package mobiledev.unb.clockin;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,9 @@ public class OnBreakFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         this.inflatedView = inflater.inflate(R.layout.onbreak_fragment, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
 
         onbreak_button = (Button) inflatedView.findViewById(R.id.onbreak_button);
         if(onbreak_button != null) {

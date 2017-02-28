@@ -1,5 +1,7 @@
 package mobiledev.unb.clockin;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -16,7 +18,13 @@ public class FireIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String tkn = FirebaseInstanceId.getInstance().getToken();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if( !preferences.getString(CustomVar.NOTIFICATION_TOKEN,"").equals(tkn)){
+            final SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(CustomVar.NOTIFICATION_TOKEN, tkn);
+            Log.d(TAG,"Generating NEW push notification token");
+        }
         Log.d(TAG,"Token ["+tkn+"]");
-        //TODO send token to server to store
     }
 }

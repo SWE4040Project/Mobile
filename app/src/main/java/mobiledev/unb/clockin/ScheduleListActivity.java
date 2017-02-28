@@ -20,9 +20,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +47,7 @@ public class ScheduleListActivity extends AppCompatActivity {
     List<Shift> shiftList;
     private final String ARG_ITEM_ID = "item_id";
     private ProgressDialog pDialog;
-
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +65,9 @@ public class ScheduleListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        View recyclerView = findViewById(R.id.course_list);
+        recyclerView = (RecyclerView) findViewById(R.id.course_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        //setupRecyclerView((RecyclerView) recyclerView);
 
     }
 
@@ -74,13 +78,38 @@ public class ScheduleListActivity extends AppCompatActivity {
         JsonRequest req = Rest.get(
                 this,
                 Rest.PATH_SCHEDULE + "?start=2017-02-26&end=2017-03-30",
-                null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
                             Log.i(TAG,"Outputting response");
                             Log.i(TAG, response.toString());
+                            for(int i=0; i<response.length(); i++){
+                                JSONObject s = (JSONObject) response.get(i);
+                                Shift shift = new Shift();
+                                shift.setId(s.getInt("id"));
+                                shift.setEmployee_id(s.getInt("employee_id"));
+                                try{
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                                    Date parsedDate = dateFormat.parse(s.getString("start"));
+                                    Timestamp startTimestamp = new java.sql.Timestamp(parsedDate.getTime());
+                                    shift.setScheduled_start_time(startTimestamp);
+                                }catch(Exception e){//this generic but you can control another types of exception
+                                    e.printStackTrace();
+                                }
+                                try{
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                                    Date parsedDate = dateFormat.parse(s.getString("end"));
+                                    Timestamp endTimestamp = new java.sql.Timestamp(parsedDate.getTime());
+                                    shift.setScheduled_start_time(endTimestamp);
+                                }catch(Exception e){//this generic but you can control another types of exception
+                                    e.printStackTrace();
+                                }
+
+                                shiftList.add(shift);
+                            }
+
+                            setupRecyclerView(recyclerView);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -126,39 +155,19 @@ public class ScheduleListActivity extends AppCompatActivity {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.schedule_list_content, parent, false);
+            Log.i(TAG,"onCreateViewHolder");
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            Log.i(TAG,"onBindViewHolder");
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).getEmployee_id());
+            holder.mIdView.setText(" "+mValues.get(position).getId());
+            holder.mCompanyId.setText(" "+mValues.get(position).getEmployee_id());
+            holder.mStartTime.setText("2:00 pm Feb 28th");
+            holder.mEndTime.setText("10:00 pm Feb 28th");
 
-            /** TODO 8:
-             *
-             * This onClick behavior will describe what should happen when a particular
-             * course is selected from our scrolling RecyclerView list. Based on the
-             * position in the scrolling list, an ARG_ITEM_ID will be passed to the
-             * CourseDetailFragment along with the data we wish to display within the
-             * Detail fragment portion of our application.
-             *
-             * The Master/Detail Flow template provides the necessary behavior
-             * performance specific to the particular device type the application is
-             * running on, we must only ensure we pass the appropriate information. This
-             * is demonstrated in the if/else check; if mTwoPane is true we're running
-             * on a tablet and we simply wish to pass a Bundle of arguments to the fragment.
-             * Otherwise, we are running on a phone and must instead create an Intent, and pass
-             * the appropriate arguments to that intent.
-             *
-             * For us, when an item is clicked we wish to display the description of
-             * that particular Course item. Currently the argument being placed in
-             * the Bundle is the mItem.id DummyContent Item id.
-             *
-             * Replace each mItem.id below so that a description of the Course item instance,
-             * created below in TODO 6, is sent instead.
-             *
-             */
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,19 +188,24 @@ public class ScheduleListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
-            public final TextView mContentView;
+            public final TextView mCompanyId;
+            public final TextView mStartTime;
+            public final TextView mEndTime;
             public Shift mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mCompanyId = (TextView) view.findViewById(R.id.companyId);
+                mStartTime = (TextView) view.findViewById(R.id.start_time_id);
+                mEndTime = (TextView) view.findViewById(R.id.end_time_id);
+                Log.i(TAG,"ViewHolder constructor");
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mCompanyId.getText() + "'";
             }
         }
     }

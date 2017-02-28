@@ -3,6 +3,7 @@ package mobiledev.unb.clockin;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,9 @@ public class InShiftFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         this.inflatedView = inflater.inflate(R.layout.inshift_fragment, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
 
         Log.i(TAG, "onCreateView");
 
