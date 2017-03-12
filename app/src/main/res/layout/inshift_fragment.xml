@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/editText4"
+        android:id="@+id/shift_notes"
         android:minHeight="120dp"
         android:minWidth="205dp"
         android:background="?attr/colorButtonNormal"
@@ -56,22 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView27"
-        android:layout_above="@+id/editText4"
+        android:layout_above="@+id/shift_notes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="15dp" />
-
-    <TextView
-        android:text="7 a.m. - 5 p.m."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView26"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/holo_blue_dark"
-        android:layout_alignBaseline="@+id/textView25"
-        android:layout_alignBottom="@+id/textView25"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="Clocked-in"
@@ -112,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView28"
-        android:layout_below="@+id/editText4"
+        android:layout_below="@+id/shift_notes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="15dp" />
@@ -126,4 +114,26 @@
         android:layout_below="@+id/textView28"
         android:layout_toLeftOf="@+id/inshift_button"
         android:layout_toStartOf="@+id/inshift_button" />
+
+    <TextView
+        android:text="7 a.m. - 5 p.m."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shift_day_textview"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_alignBottom="@+id/textView27"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="7 a.m. - 5 p.m."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shift_time_textview"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_above="@+id/shift_day_textview"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

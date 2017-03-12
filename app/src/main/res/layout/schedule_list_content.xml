@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="40dp"
               android:orientation="horizontal"
-    android:weightSum="1">
+              android:weightSum="1"
+              tools:showIn="@layout/schedule_list">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +20,8 @@
             android:layout_marginStart="18dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            tools:text="EmpName" />
 
         <TextView
             android:text="start"
@@ -27,8 +30,10 @@
             android:id="@+id/start_time_id"
             android:layout_below="@+id/name"
             android:layout_toEndOf="@+id/name"
+            android:layout_toRightOf="@+id/name"
             android:layout_alignLeft="@+id/name"
-            android:layout_alignStart="@+id/name" />
+            android:layout_alignStart="@+id/name"
+            tools:text="startTime" />
 
         <TextView
             android:text="Company Id"
@@ -39,7 +44,8 @@
             android:layout_toEndOf="@+id/textView11"
             android:layout_marginLeft="65dp"
             android:layout_marginStart="65dp"
-            android:id="@+id/textView12" />
+            android:id="@+id/clockin_time"
+            tools:text="Company Id" />
 
         <TextView
             android:text="-"
@@ -48,16 +54,18 @@
             android:id="@+id/id"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/textView11"
-            android:layout_toRightOf="@+id/textView11" />
+            android:layout_toRightOf="@+id/textView11"
+            tools:text=" ID" />
 
         <TextView
             android:text="-"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView12"
-            android:layout_toRightOf="@+id/textView12"
-            android:layout_toEndOf="@+id/textView12"
-            android:id="@+id/companyId" />
+            android:layout_alignBottom="@+id/clockin_time"
+            android:layout_toRightOf="@+id/clockin_time"
+            android:layout_toEndOf="@+id/clockin_time"
+            android:id="@+id/companyId"
+            tools:text=" ID" />
 
         <TextView
             android:text="Emp Id"
@@ -67,15 +75,17 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/name"
             android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp" />
+            android:layout_marginStart="43dp"
+            tools:text="Emp Id" />
 
         <TextView
             android:text="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/end_time_id"
-            android:layout_below="@+id/textView12"
-            android:layout_alignLeft="@+id/textView12"
-            android:layout_alignStart="@+id/textView12" />
+            android:layout_below="@+id/clockin_time"
+            android:layout_alignLeft="@+id/clockin_time"
+            android:layout_alignStart="@+id/clockin_time"
+            tools:text="endTime" />
     </RelativeLayout>
 </LinearLayout>

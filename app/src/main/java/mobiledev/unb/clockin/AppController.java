@@ -7,6 +7,7 @@ package mobiledev.unb.clockin;
 import android.app.Application;
 import android.text.TextUtils;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -44,6 +45,9 @@ public class AppController extends Application {
 
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
+        req.setRetryPolicy(new DefaultRetryPolicy(500000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         getRequestQueue().add(req);
     }
 

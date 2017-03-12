@@ -103,8 +103,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clockin) {
             Log.i(TAG, "Clock in here.");
-            //loadClockinFragment();
-            onReplaceFragmentAction(new ClockinFragment());
+            loadClockinFragment();
+            //onReplaceFragmentAction(new ClockinFragment());
 
         } else if (id == R.id.nav_camera) {
             Log.i(TAG, "Handle the camera");
@@ -151,25 +151,25 @@ public class MainActivity extends AppCompatActivity
                         try {
                             Log.d(TAG, response.toString());
 
-                                Log.d(TAG, ""+response.getInt("State"));
+                            Log.d(TAG, ""+response.getInt("state"));
 
-                                // Create new fragment and transaction
-                                Fragment newFragment = null;
+                            // Create new fragment and transaction
+                            Fragment newFragment = null;
 
-                                int state = response.getInt("State");
-                                switch(state){
-                                case 0: newFragment = new ClockinFragment();
-                                    Log.d(TAG, "Clockin Fragment");
-                                    break;
-                                case 1: newFragment = new InShiftFragment();
-                                    Log.d(TAG, "InShift Fragment");
-                                    break;
-                                case 2: newFragment = new OnBreakFragment();
-                                    Log.d(TAG, "OnBreak Fragment");
-                                    break;
-                                default: newFragment = new ClockinFragment();
-                                    Log.d(TAG, "Default Fragment");
-                                    break;
+                            int state = response.getInt("state");
+                            switch(state){
+                            case 0: newFragment = new ClockinFragment();
+                                Log.d(TAG, "Clockin Fragment");
+                                break;
+                            case 1: newFragment = new InShiftFragment();
+                                Log.d(TAG, "InShift Fragment");
+                                break;
+                            case 2: newFragment = new OnBreakFragment();
+                                Log.d(TAG, "OnBreak Fragment");
+                                break;
+                            default: newFragment = new ClockinFragment();
+                                Log.d(TAG, "Default Fragment");
+                                break;
                             }
 
                             onReplaceFragmentAction(newFragment);
