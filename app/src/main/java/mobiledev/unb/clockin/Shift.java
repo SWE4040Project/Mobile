@@ -26,11 +26,11 @@ public class Shift {
 
     }
 
-    private Shift(int id, int employee_id, int location_id, int company_id, Timestamp scheduled_start_time, Timestamp scheduled_end_time, Timestamp real_start_time, Timestamp real_end_time, Timestamp approved_start_time, Timestamp approved_end_time, boolean available, String worked_notes) {
+    public Shift(int id, int employee_id, int location_id, int company_id, Timestamp scheduled_start_time, Timestamp scheduled_end_time, Timestamp real_start_time, Timestamp real_end_time, Timestamp approved_start_time, Timestamp approved_end_time, boolean available, String worked_notes) {
         this.id = id;
         this.employee_id = employee_id;
         this.location_id = location_id;
-        this.company_id = location_id;
+        this.company_id = company_id;
         this.scheduled_start_time = scheduled_start_time;
         this.scheduled_end_time = scheduled_end_time;
         this.real_start_time = real_start_time;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#eeddff">
+
+    <Button
+        android:text="Send Push Notification"
+        android:layout_height="wrap_content"
+        android:id="@+id/push_notification_button"
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="enter text here"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_below="@+id/push_notification_button"
+        android:layout_alignLeft="@+id/push_notification_button"
+        android:layout_alignStart="@+id/push_notification_button"
+        android:layout_marginTop="66dp"
+        android:layout_alignRight="@+id/push_notification_button"
+        android:layout_alignEnd="@+id/push_notification_button" />
+</RelativeLayout>

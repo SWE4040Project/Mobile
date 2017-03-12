@@ -9,5 +9,5 @@
                                         android:layout_marginLeft="16dp"
                                         android:layout_marginRight="16dp"
                                         app:layoutManager="LinearLayoutManager"
-                                        tools:context="mobiledev.unb.ca.skeleton_lab4_part2.CourseListActivity"
+                                        tools:context="mobiledev.unb.clockin.ScheduleListActivity"
                                         tools:listitem="@layout/schedule_list_content"/>

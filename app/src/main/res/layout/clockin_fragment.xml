@@ -1,53 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="0"
-    android:background="#ABABAB">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/office3"
+    android:fitsSystemWindows="true">
 
-    <Button
-        android:text="Clock In"
+    <LinearLayout
+        android:orientation="vertical"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/clockin_button"
-        android:layout_marginTop="167dp"
-        android:layout_width="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-    <TextView
-        android:text="Clock in by clicking button below"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/clockin_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="96dp"
-        android:id="@+id/textView2" />
+        <mobiledev.unb.clockin.ClockView
+            android:id="@+id/clock"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="45dp"/>
 
+        <TextView
+            android:text="Next shift:"
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp"/>
 
-    <TextView
-        android:text="Latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/latitude"
-        android:layout_below="@+id/clockin_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp" />
+        <TextView
+            android:text="2:00p.m. - 10:00p.m."
+            android:id="@+id/shift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="40dp"
+            android:textColor="#b22631"
+            android:textStyle="bold"
+            android:textSize="21sp" />
 
-    <TextView
-        android:text="Longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/longitude"
-        android:layout_marginTop="42dp"
-        android:layout_below="@+id/latitude"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:text="Clock in by clicking button below"
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"/>
 
-    <Button
-        android:text="Get Location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/longitude"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/button_location" />
-</RelativeLayout>
+        <at.markushi.ui.CircleButton
+            android:id="@+id/clockin_button"
+            android:layout_width="194dip"
+            android:layout_height="194dip"
+            android:src="@drawable/clock_red"
+            app:cb_color="#b22631"
+            app:cb_pressedRingWidth="8dip"
+            android:padding="15dp"
+            tools:cb_color="@color/color1"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+</ScrollView>

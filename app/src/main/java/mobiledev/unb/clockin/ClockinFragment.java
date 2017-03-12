@@ -29,6 +29,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import at.markushi.ui.CircleButton;
+
 /**
  * Created by Brent on 2017-02-13.
  */
@@ -37,7 +39,7 @@ public class ClockinFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     View inflatedView = null;
-    Button clockin_button;
+    CircleButton clockin_button;
     Button button_location;
 
     final String TAG = ClockinFragment.class.getSimpleName();
@@ -49,6 +51,8 @@ public class ClockinFragment extends Fragment implements
     private LocationRequest locationRequest;
     TextView  mLatitudeText;
     TextView mLongitudeText;
+    private ClockView mClock;
+    protected String lng, lat;
 
     @Override
     public void onAttach(Context activity) {
@@ -77,35 +81,40 @@ public class ClockinFragment extends Fragment implements
 
         this.inflatedView = inflater.inflate(R.layout.clockin_fragment, container, false);
 
-        mLatitudeText = (TextView) inflatedView.findViewById(R.id.latitude);
-        mLongitudeText = (TextView) inflatedView.findViewById(R.id.longitude);
-
-        clockin_button = (Button) inflatedView.findViewById(R.id.clockin_button);
+        clockin_button = (CircleButton) inflatedView.findViewById(R.id.clockin_button);
         if(clockin_button != null) {
             clockin_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG, "clockin_button activated. Go to in_shift");
+
+                    //getCoarseLocation(); ******Commented out for emulator testing purposes
+
                     // Send the event to the host activity
                     mCallback.onReplaceFragmentAction(new InShiftFragment());
                 }
             });
         }
-        button_location = (Button) inflatedView.findViewById(R.id.button_location);
-        if(button_location != null) {
-            button_location.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i(TAG, "clockin_button activated. Get location");
-                    // Send the event to the host activity
-                    getCoarseLocation();
-                }
-            });
-        }
+
+        mClock = (ClockView) inflatedView.findViewById(R.id.clock);
 
         // Inflate the layout for this fragment
         return inflatedView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mClock.resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mClock.pause();
+    }
+
+
 
     public void getCoarseLocation(){
 
@@ -124,10 +133,16 @@ public class ClockinFragment extends Fragment implements
         }
         if (mLastLocation != null) {
             Log.i(TAG, "mLastLocation = " + mLastLocation.toString());
-            Log.i(TAG, "String.valueOf(mLastLocation.getLongitude()) = " + String.valueOf(mLastLocation.getLongitude()));
             if(mLongitudeText != null && mLatitudeText != null){
-                mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-                mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude())); *****Don't need at the moment. Stored as String below
+                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));   *****Don't need at the moment. Stored as String below
+
+                lng = String.valueOf(mLastLocation.getLongitude());
+                lat = String.valueOf(mLastLocation.getLatitude());
+                Log.i(TAG, "lng = " + lng);
+                Log.i(TAG, "lat = " + lat);
+
+
             }
         }
 
