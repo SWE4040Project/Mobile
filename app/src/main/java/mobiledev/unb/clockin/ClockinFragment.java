@@ -1,5 +1,6 @@
 package mobiledev.unb.clockin;
 
+import android.*;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.DebugUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +19,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONObject;
+import at.markushi.ui.CircleButton;
 
 /**
  * Created by Brent on 2017-02-13.
@@ -37,8 +39,8 @@ public class ClockinFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     View inflatedView = null;
-    Button clockin_button;
-    //Button button_location;
+    CircleButton clockin_button;
+    Button button_location;
 
     final String TAG = ClockinFragment.class.getSimpleName();
 
@@ -47,13 +49,10 @@ public class ClockinFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest locationRequest;
-    //TextView  mLatitudeText;
-    //TextView mLongitudeText;
-
-    private TextView shift_time_textview;
-    private TextView shift_day_textview;
-    private TextView current_time_textview;
-    private TextView shift_status;
+    TextView  mLatitudeText;
+    TextView mLongitudeText;
+    private ClockView mClock;
+    protected String lng, lat;
 
     @Override
     public void onAttach(Context activity) {
@@ -82,119 +81,40 @@ public class ClockinFragment extends Fragment implements
 
         this.inflatedView = inflater.inflate(R.layout.clockin_fragment, container, false);
 
-        //mLatitudeText = (TextView) inflatedView.findViewById(R.id.latitude);
-        //mLongitudeText = (TextView) inflatedView.findViewById(R.id.longitude);
+        clockin_button = (CircleButton) inflatedView.findViewById(R.id.clockin_button);
+        if(clockin_button != null) {
+            clockin_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG, "clockin_button activated. Go to in_shift");
 
-        shift_time_textview = (TextView) inflatedView.findViewById(R.id.shift_time_textview);
-        shift_day_textview = (TextView) inflatedView.findViewById(R.id.shift_day_textview);
-        current_time_textview = (TextView) inflatedView.findViewById(R.id.current_time_textview);
-        shift_status = (TextView) inflatedView.findViewById(R.id.shift_status);
+                    //getCoarseLocation(); ******Commented out for emulator testing purposes
 
-        clockin_button = (Button) inflatedView.findViewById(R.id.clockin_button);
-        clockin_button.setEnabled(false);
-        setCurrentShift();
+                    // Send the event to the host activity
+                    mCallback.onReplaceFragmentAction(new InShiftFragment());
+                }
+            });
+        }
 
-//        button_location = (Button) inflatedView.findViewById(R.id.button_location);
-//        if(button_location != null) {
-//            button_location.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.i(TAG, "clockin_button activated. Get location");
-//                    // Send the event to the host activity
-//                    getCoarseLocation();
-//                }
-//            });
-//        }
+        mClock = (ClockView) inflatedView.findViewById(R.id.clock);
 
         // Inflate the layout for this fragment
         return inflatedView;
     }
 
-    private void setCurrentShift() {
-        JsonObjectRequest req = Rest.get(
-                getActivity(),
-                Rest.PATH_SHIFT_CURRENT,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, "Shifts loaded successfully!");
-                            Log.d(TAG, response.toString());
-                            /*{"scheduled_day":"Friday, Mar 10",
-                                "scheduled_end":"11:14 PM",
-                                "scheduled_start":"6:38 PM",
-                                "actual_start":"6:26 PM Friday, Mar 10",
-                                "progress":0.17500198240215395,
-                                "shift_notes":"asdaasdfsfsdfasdfafaasdaasdfsfsdfasdaasdfsfsdfasdfafaaasdfdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafasdfasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfaf",
-                                "actual_end":"--",
-                                "current_time":"6:45 PM"}*/
-
-                            shift_time_textview.setText(response.get("scheduled_start") + " - " + response.get("scheduled_end"));
-                            shift_day_textview.setText((String)response.get("scheduled_day"));
-                            current_time_textview.setText((String)response.get("current_time"));
-
-                            shift_status.setText("Clock In");
-
-                            clockin_button.setEnabled(true);
-                            clockin_button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Log.i(TAG, "clockin_button activated. Go to in_shift");
-                                    // Send the event to the host activity
-                                    clockinCall();
-                                }
-                            });
-                        } catch (Exception e) {
-                            Log.i(TAG, e.getMessage());
-                            Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        shift_status.setText("No Shifts");
-                    }
-                });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+    @Override
+    public void onResume() {
+        super.onResume();
+        mClock.resume();
     }
 
-    private void clockinCall() {
-        JsonObjectRequest req = Rest.post(
-                getActivity(),
-                Rest.PATH_CLOCKIN,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, "Clockin successful!");
-
-                            mCallback.onReplaceFragmentAction(new InShiftFragment());
-                        } catch (Exception e) {
-                            Log.i(TAG, e.getMessage());
-                            Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e(TAG, "Error: " + error.getMessage());
-                        Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+    @Override
+    public void onPause() {
+        super.onPause();
+        mClock.pause();
     }
+
+
 
     public void getCoarseLocation(){
 
@@ -213,11 +133,17 @@ public class ClockinFragment extends Fragment implements
         }
         if (mLastLocation != null) {
             Log.i(TAG, "mLastLocation = " + mLastLocation.toString());
-            Log.i(TAG, "String.valueOf(mLastLocation.getLongitude()) = " + String.valueOf(mLastLocation.getLongitude()));
-            //if(mLongitudeText != null && mLatitudeText != null){
-            //    mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            //    mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-            //}
+            if(mLongitudeText != null && mLatitudeText != null){
+                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude())); *****Don't need at the moment. Stored as String below
+                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));   *****Don't need at the moment. Stored as String below
+
+                lng = String.valueOf(mLastLocation.getLongitude());
+                lat = String.valueOf(mLastLocation.getLatitude());
+                Log.i(TAG, "lng = " + lng);
+                Log.i(TAG, "lat = " + lat);
+
+
+            }
         }
 
     }

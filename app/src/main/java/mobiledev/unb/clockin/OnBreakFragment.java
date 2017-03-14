@@ -1,7 +1,9 @@
 package mobiledev.unb.clockin;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -13,12 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-import org.json.JSONObject;
+import at.markushi.ui.CircleButton;
+
+import static mobiledev.unb.clockin.InShiftFragment.notes;
 
 /**
  * Created by Brent on 2017-02-13.
@@ -26,15 +28,20 @@ import org.json.JSONObject;
 
 public class OnBreakFragment extends Fragment {
     View inflatedView = null;
-    Button onbreak_button;
+    View promptView = null;
+    CircleButton onbreak_button;
+    CircleButton addnote_button2;
+    CircleButton clockout_button2;
+    private Calendar calendar= Calendar.getInstance();
+    private static String breakString = "";
+    private TextView breakResult;
+    private TextView clockedBreak;
+    private ClockView mClock;
+    private SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
 
     final String TAG = OnBreakFragment.class.getSimpleName();
 
     ClockinFragmentScreenListener mCallback;
-
-    private TextView shift_time_textview;
-    private TextView clockin_time;
-    private EditText shift_notes;
 
     @Override
     public void onAttach(Context activity) {
@@ -56,108 +63,104 @@ public class OnBreakFragment extends Fragment {
 
         this.inflatedView = inflater.inflate(R.layout.onbreak_fragment, container, false);
 
+        final Context context = inflater.getContext();
+
+        calendar = Calendar.getInstance();
+        breakString =breakString + mdformat.format(calendar.getTime())+"\n";
+        clockedBreak = (TextView) inflatedView.findViewById(R.id.clockedBreak);
+        clockedBreak.setText(breakString);
+
+        breakResult = (TextView)inflatedView.findViewById(R.id.breakResult);
+        breakResult.setText(notes); //same string from inshift
+
+        mClock = (ClockView) inflatedView.findViewById(R.id.clock3);
+
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        if(fab != null){
-            fab.hide();
+        fab.hide();
+
+        onbreak_button = (CircleButton) inflatedView.findViewById(R.id.onbreak_button);
+        if(onbreak_button != null) {
+            onbreak_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG, "Save break start time:" +breakString);
+                    breakString = "";
+                    Log.i(TAG, "clockin_button activated. Go to on in shift");
+
+                    // Send the event to the host activity
+                    mCallback.onReplaceFragmentAction(new InShiftFragment());
+                }
+            });
         }
 
-        shift_time_textview = (TextView) inflatedView.findViewById(R.id.shift_time_textview);
-        clockin_time = (TextView) inflatedView.findViewById(R.id.clockin_time);
-        shift_notes = (EditText) inflatedView.findViewById(R.id.shift_notes);
+        clockout_button2 = (CircleButton) inflatedView.findViewById(R.id.clockout_button2);
+        if(clockout_button2 != null) {
+            clockout_button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CharSequence text = "Must clock back in first";
+                    int duration = Toast.LENGTH_SHORT;
 
-        onbreak_button = (Button) inflatedView.findViewById(R.id.onbreak_button);
-        onbreak_button.setEnabled(false);
-        setCurrentShift();
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            });
+        }
+
+        addnote_button2 = (CircleButton) inflatedView.findViewById(R.id.addnote_button);
+        if(addnote_button2 != null){
+            Log.i(TAG, "Creating addnote_button");
+            addnote_button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG, "addnote_button activated. Creating dialog");
+                    LayoutInflater inflater2 = getActivity().getLayoutInflater();
+                    promptView = inflater2.inflate(R.layout.prompt, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                    alertDialogBuilder.setView(promptView);
+
+                    final EditText userInput = (EditText) promptView.findViewById(R.id.editTextDialogUserInput);
+
+
+                    alertDialogBuilder.setCancelable(false).setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            notes = notes + "- " + userInput.getText()+"\n";
+                            Log.i(TAG, "notes = "+notes);
+                            breakResult.setText(notes);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    alertDialog.show();
+
+
+
+                }
+            });
+        }
 
         // Inflate the layout for this fragment
         return inflatedView;
     }
 
-    private void setCurrentShift() {
-        JsonObjectRequest req = Rest.get(
-                getActivity(),
-                Rest.PATH_SHIFT_CURRENT,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, "Shifts loaded successfully!");
-                            Log.d(TAG, response.toString());
-                            /*{"scheduled_day":"Friday, Mar 10",
-                                "scheduled_end":"11:14 PM",
-                                "scheduled_start":"6:38 PM",
-                                "actual_start":"6:26 PM Friday, Mar 10",
-                                "progress":0.17500198240215395,
-                                "shift_notes":"asdaasdfsfsdfasdfafaasdaasdfsfsdfasdaasdfsfsdfasdfafaaasdfdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafasdfasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfafaasdaasdfsfsdfasdfaf",
-                                "actual_end":"--",
-                                "current_time":"6:45 PM"}*/
-
-                            shift_time_textview.setText(response.get("scheduled_start") + " - " + response.get("scheduled_end"));
-                            clockin_time.setText((String)response.get("actual_start"));
-                            shift_notes.setText((String)response.get("shift_notes"));
-
-                            onbreak_button.setEnabled(true);
-                            if(onbreak_button != null) {
-                                onbreak_button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Log.i(TAG, "clockin_button activated. Go to on break");
-                                        // Send the event to the host activity
-                                        breakOutCall();
-                                    }
-                                });
-                            }
-                        } catch (Exception e) {
-                            Log.i(TAG, e.getMessage());
-                            Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e(TAG, "Error: " + error.getMessage());
-                        Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+    @Override
+    public void onResume() {
+        super.onResume();
+        mClock.resume();
     }
 
-    private void breakOutCall() {
-        JsonObjectRequest req = Rest.post(
-                getActivity(),
-                Rest.PATH_BREAKOUT,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, "Clockin successful!");
-
-                            mCallback.onReplaceFragmentAction(new InShiftFragment());
-                        } catch (Exception e) {
-                            Log.i(TAG, e.getMessage());
-                            Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e(TAG, "Error: " + error.getMessage());
-                        Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+    @Override
+    public void onPause() {
+        super.onPause();
+        mClock.pause();
     }
 }

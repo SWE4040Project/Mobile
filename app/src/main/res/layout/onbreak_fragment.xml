@@ -1,119 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/office3"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2:30 p.m."
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:id="@+id/clockin_time"
-        android:textSize="24sp"
-        android:layout_alignBaseline="@+id/textView13"
-        android:layout_alignBottom="@+id/textView13"
-        android:layout_toRightOf="@+id/textView13"
-        android:layout_toEndOf="@+id/textView13"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
-        android:textColor="?attr/actionMenuTextColor" />
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-    <Button
-        android:text="End Break"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/onbreak_button"
-        android:background="@android:color/background_dark"
-        android:layout_marginBottom="25dp"
-        android:minHeight="72dp"
-        android:minWidth="188dip"
-        android:textColor="@android:color/background_light"
-        android:textSize="22sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <mobiledev.unb.clockin.ClockView
+            android:id="@+id/clock3"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="45dp"/>
 
-    <TextView
-        android:text="7 a.m. - 5 p.m."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/shift_time_textview"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/holo_blue_dark"
-        android:layout_alignBaseline="@+id/textView10"
-        android:layout_alignBottom="@+id/textView10"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Shift:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:id="@+id/textView10"
-        android:layout_below="@+id/textView7"
-        android:layout_alignRight="@+id/textView7"
-        android:layout_alignEnd="@+id/textView7" />
+            <TextView
+                android:text="Status:"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textSize="27sp"
+                android:layout_marginRight="30dp"/>
 
-    <TextView
-        android:text="On Break"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView8"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/background_dark"
-        android:layout_above="@+id/shift_time_textview"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+            <TextView
+                android:text="On Break"
+                android:id="@+id/status_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textSize="27sp"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:id="@+id/textView7"
-        android:layout_marginTop="55dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Break Start:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:id="@+id/textView13"
-        android:textSize="24sp"
-        android:layout_above="@+id/textView11"
-        android:layout_alignRight="@+id/shift_notes"
-        android:layout_alignEnd="@+id/shift_notes" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:text="Shift Notes:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView11"
-        android:layout_above="@+id/shift_notes"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="21dp" />
+            <TextView
+                android:text="Break start time:"
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textSize="22sp"
+                android:layout_marginRight="30dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/shift_notes"
-        android:minHeight="120dp"
-        android:minWidth="205dp"
-        android:background="?attr/colorButtonNormal"
-        android:layout_marginBottom="45dp"
-        android:layout_above="@+id/onbreak_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+            <TextView
+                android:id="@+id/clockedBreak"
+                android:maxLines="3"
+                android:scrollbars="vertical"
+                android:layout_gravity="center"
+                android:textSize="22sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="Shift Notes:"
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textSize="22sp"
+                android:layout_marginRight="30dp"/>
+
+            <at.markushi.ui.CircleButton
+                android:id="@+id/addnote_button"
+                android:layout_width="64dip"
+                android:layout_height="64dip"
+                android:src="@drawable/pencil"
+                app:cb_color="#787544"
+                app:cb_pressedRingWidth="8dip"
+                android:padding="10dp"
+                tools:cb_color="@color/color1"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/breakResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:minHeight="195dp"
+                android:minWidth="200dp"
+                android:maxHeight="195dp"
+                android:maxWidth="200dp"
+                android:background="#bdd6d7d7"
+                android:gravity="top"
+                android:isScrollContainer="false"
+                android:layout_marginRight="45dp"
+                android:inputType="none"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/onbreak_button"
+                    android:layout_width="94dip"
+                    android:layout_height="94dip"
+                    android:src="@drawable/clock_red"
+                    app:cb_color="#b22631"
+                    app:cb_pressedRingWidth="8dip"
+                    android:padding="12dp"
+                    tools:cb_color="@color/color1"
+                    android:layout_gravity="center_horizontal"/>
+
+                <at.markushi.ui.CircleButton
+                    android:id="@+id/clockout_button2"
+                    android:layout_width="94dip"
+                    android:layout_height="94dip"
+                    android:src="@drawable/x"
+                    app:cb_color="#6b8795"
+                    app:cb_pressedRingWidth="8dip"
+                    android:padding="12dp"
+                    tools:cb_color="@color/color1"
+                    android:layout_gravity="center_horizontal"
+                    android:alpha="0.5"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>

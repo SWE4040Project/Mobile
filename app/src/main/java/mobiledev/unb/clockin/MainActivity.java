@@ -4,9 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -103,13 +101,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clockin) {
             Log.i(TAG, "Clock in here.");
-            loadClockinFragment();
-            //onReplaceFragmentAction(new ClockinFragment());
+            onReplaceFragmentAction(new ClockinFragment());
 
         } else if (id == R.id.nav_camera) {
-            Log.i(TAG, "Handle the camera");
-            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-            startActivity(intent);
+            // Handle the camera action
         } else if (id == R.id.nav_myshifts) {
             Log.i(TAG, "Load my shifts");
             Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
@@ -126,12 +121,21 @@ public class MainActivity extends AppCompatActivity
             Log.i(TAG, "Getting location");
             onReplaceFragmentAction(new ClockinFragment());
         } else if (id == R.id.nav_send) {
-            onReplaceFragmentAction(new PushNotificationFragment());
+            getPushNotificationToken();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void getPushNotificationToken(){
+
+            String tkn = FirebaseInstanceId.getInstance().getToken();
+            Toast.makeText(MainActivity.this, "Current token ["+tkn+"]",
+                    Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Token ["+tkn+"]");
+
     }
 
     private void loadClockinFragment(){
@@ -151,25 +155,25 @@ public class MainActivity extends AppCompatActivity
                         try {
                             Log.d(TAG, response.toString());
 
-                            Log.d(TAG, ""+response.getInt("state"));
+                                Log.d(TAG, ""+response.getInt("State"));
 
-                            // Create new fragment and transaction
-                            Fragment newFragment = null;
+                                // Create new fragment and transaction
+                                Fragment newFragment = null;
 
-                            int state = response.getInt("state");
-                            switch(state){
-                            case 0: newFragment = new ClockinFragment();
-                                Log.d(TAG, "Clockin Fragment");
-                                break;
-                            case 1: newFragment = new InShiftFragment();
-                                Log.d(TAG, "InShift Fragment");
-                                break;
-                            case 2: newFragment = new OnBreakFragment();
-                                Log.d(TAG, "OnBreak Fragment");
-                                break;
-                            default: newFragment = new ClockinFragment();
-                                Log.d(TAG, "Default Fragment");
-                                break;
+                                int state = response.getInt("State");
+                                switch(state){
+                                case 0: newFragment = new ClockinFragment();
+                                    Log.d(TAG, "Clockin Fragment");
+                                    break;
+                                case 1: newFragment = new InShiftFragment();
+                                    Log.d(TAG, "InShift Fragment");
+                                    break;
+                                case 2: newFragment = new OnBreakFragment();
+                                    Log.d(TAG, "OnBreak Fragment");
+                                    break;
+                                default: newFragment = new ClockinFragment();
+                                    Log.d(TAG, "Default Fragment");
+                                    break;
                             }
 
                             onReplaceFragmentAction(newFragment);
