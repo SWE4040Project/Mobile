@@ -34,7 +34,7 @@ public class Login extends Activity {
     EditText _usernameText;
     EditText _passwordText;
     Button _loginButton;
-    TextView _forgotpasswordText;
+    TextView _createNewUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class Login extends Activity {
         _usernameText = (EditText) findViewById(R.id.input_email);
         _passwordText = (EditText) findViewById(R.id.input_password);
         _loginButton = (Button) findViewById(R.id.btn_login);
-        _forgotpasswordText = (TextView) findViewById(R.id.link_forgotpassword);
+        _createNewUser = (TextView) findViewById(R.id.link_createnewuser);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -54,15 +54,70 @@ public class Login extends Activity {
             }
         });
 
-        _forgotpasswordText.setOnClickListener(new View.OnClickListener() {
+        _createNewUser.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
-                //Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                //startActivityForResult(intent, REQUEST_SIGNUP);
+                createNewUser();
             }
         });
+    }
+
+    private void createNewUser() {
+
+        if (!validate()) {
+            onCreateFailed();
+            return;
+        }
+
+        _loginButton.setEnabled(false);
+        _createNewUser.setEnabled(false);
+
+        final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating...");
+        progressDialog.show();
+
+        String username = _usernameText.getText().toString();
+        String password = _passwordText.getText().toString();
+
+        final JSONObject params = new JSONObject();
+        try{
+            params.put("name", username);
+            params.put("password", password);
+        }catch(JSONException je){
+            je.printStackTrace();
+        }
+
+        JsonObjectRequest req = Rest.post(
+                this,
+                Rest.PATH_CREATE,
+                params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "New User Created.");
+                        progressDialog.hide();
+                        try {
+                            onCreateSuccess((String)params.get("name"));
+                        }catch(JSONException je){
+                            onCreateFailed();
+                            je.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+                progressDialog.hide();
+                onCreateFailed();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(req);
+
     }
 
     public void login() {
@@ -166,6 +221,21 @@ public class Login extends Activity {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _loginButton.setEnabled(true);
+    }
+
+    public void onCreateSuccess(String name) {
+        Toast.makeText(getBaseContext(),
+                name + " successfully created!",
+                Toast.LENGTH_LONG).show();
+        _loginButton.setEnabled(true);
+        _createNewUser.setEnabled(true);
+    }
+
+    public void onCreateFailed() {
+        Toast.makeText(getBaseContext(), "Not completed. Be sure to fill out the username and password fields", Toast.LENGTH_LONG).show();
+
+        _loginButton.setEnabled(true);
+        _createNewUser.setEnabled(true);
     }
 
     public boolean validate() {

@@ -4,37 +4,40 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_clockin"
-            android:icon="@drawable/ic_clockin"
+            android:icon="@drawable/ic_clock"
             android:title="@string/menu_clockin" />
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="My Camera" />
-        <item
             android:id="@+id/nav_myshifts"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_shifts"
             android:title="@string/my_shifts" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_shifts"
             android:title="@string/schedule" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Testing REST" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Clockin Data">
         <menu>
             <item
-                android:id="@+id/nav_location"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_location" />
+                android:id="@+id/nav_camera"
+                android:icon="@drawable/ic_camera"
+                android:title="@string/camera" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/push_notification" />
+                android:id="@+id/nav_location"
+                android:icon="@drawable/nav_location"
+                android:title="@string/location" />
         </menu>
     </item>
-
+    <item android:title="Testing Server">
+        <menu>
+            <item
+                android:id="@+id/nav_manage"
+                android:icon="@drawable/ic_rest"
+                android:title="Check Verification" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_send"
+                android:title="Send Push Notification" />
+        </menu>
+    </item>
 </menu>

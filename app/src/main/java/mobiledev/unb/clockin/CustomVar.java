@@ -8,4 +8,7 @@ public class CustomVar {
     public static final String AUTHORIZATION = "Authorization";
     public static final String XSRF_TOKEN = "xsrfToken";
     public static final String NOTIFICATION_TOKEN = "notification_token";
+    public static final String CLOCKIN_IMAGE_URL = "clockin_image";
+    public static final String LONGITUDE = "longitude";
+    public static final String LATITUDE = "latitude";
 }

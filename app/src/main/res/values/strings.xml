@@ -4,11 +4,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
     <string name="menu_clockin">My Clock In</string>
     <string name="menu_location">Get Current Location</string>
     <string name="my_shifts">My Shifts</string>
     <string name="schedule">Weekly Schedule</string>
     <string name="push_notification">Activate Push Notifications</string>
+    <string name="camera">Last Clockin Image</string>
+    <string name="location">Last Clockin Location</string>
 
 </resources>

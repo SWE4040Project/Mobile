@@ -4,11 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,15 +40,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -57,6 +48,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setPushNotificationCall();
+        loadClockinFragment();
     }
 
     @Override
@@ -64,6 +58,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } if (getFragmentManager().getBackStackEntryCount()!=0) {
+            getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -84,7 +80,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            Log.i(TAG, "Logging out...");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            final SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(CustomVar.AUTHORIZATION, null);
+            editor.putString(CustomVar.XSRF_TOKEN, null);
+            editor.apply();
+
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             return true;
         }
 
@@ -101,10 +107,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_clockin) {
             Log.i(TAG, "Clock in here.");
-            onReplaceFragmentAction(new ClockinFragment());
-
+            loadClockinFragment();
         } else if (id == R.id.nav_camera) {
             // Handle the camera action
+            Log.i(TAG, "Camera screen.");
+            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_location) {
+            Log.i(TAG, "Load my last clockin location");
+            externalLoadLocation();
         } else if (id == R.id.nav_myshifts) {
             Log.i(TAG, "Load my shifts");
             Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
@@ -117,11 +128,8 @@ public class MainActivity extends AppCompatActivity
             Log.i(TAG, "Selecting nav_manage");
             Intent intent = new Intent(MainActivity.this, TestRestActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_location) {
-            Log.i(TAG, "Getting location");
-            onReplaceFragmentAction(new ClockinFragment());
         } else if (id == R.id.nav_send) {
-            getPushNotificationToken();
+            onReplaceFragmentAction(new PushNotificationFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,13 +137,18 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void getPushNotificationToken(){
-
-            String tkn = FirebaseInstanceId.getInstance().getToken();
-            Toast.makeText(MainActivity.this, "Current token ["+tkn+"]",
-                    Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Token ["+tkn+"]");
-
+    private void externalLoadLocation() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String lng = preferences.getString(CustomVar.LONGITUDE, "");
+        final String lat = preferences.getString(CustomVar.LATITUDE, "");
+        intent.setData(Uri.parse("geo:0,0?q=" + (lat+","+lng)));
+        try {
+            Log.i(TAG, "lng = " + lng + " && lat = " + lat);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadClockinFragment(){
@@ -155,12 +168,12 @@ public class MainActivity extends AppCompatActivity
                         try {
                             Log.d(TAG, response.toString());
 
-                                Log.d(TAG, ""+response.getInt("State"));
+                                Log.d(TAG, ""+response.getInt("state"));
 
                                 // Create new fragment and transaction
                                 Fragment newFragment = null;
 
-                                int state = response.getInt("State");
+                                int state = response.getInt("state");
                                 switch(state){
                                 case 0: newFragment = new ClockinFragment();
                                     Log.d(TAG, "Clockin Fragment");
@@ -201,16 +214,60 @@ public class MainActivity extends AppCompatActivity
         AppController.getInstance().addToRequestQueue(req);
     }
 
+    private void setPushNotificationCall() {
+        String tkn = FirebaseInstanceId.getInstance().getToken();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if( !preferences.getString(CustomVar.NOTIFICATION_TOKEN,"").equals(tkn)){
+            final SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(CustomVar.NOTIFICATION_TOKEN, tkn);
+            Log.d(TAG,"Generating NEW push notification token");
+
+            updateEmployeePushNotification();
+        }
+    }
+
+    private void updateEmployeePushNotification(){
+
+        String tkn = FirebaseInstanceId.getInstance().getToken();
+        JSONObject params = new JSONObject();
+        try{
+            params.put("push_notification_token", tkn);
+        }catch(JSONException je){
+            je.printStackTrace();
+        }
+        JsonObjectRequest req = Rest.post(
+                this,
+                Rest.PATH_EMPLOYEE_TOKEN,
+                params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG,error.getStackTrace().toString());
+                        VolleyLog.e(TAG, "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(),
+                                error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(req);
+    }
+
     public void onReplaceFragmentAction(Fragment fragment) {
         // Transaction
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
+        // and do not add the transaction to the back stack
         transaction.replace(R.id.content_frame, fragment);
-        transaction.addToBackStack(null);
 
         // Commit the transaction
         transaction.commit();
     }
 }
+

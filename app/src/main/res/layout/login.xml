@@ -57,11 +57,11 @@
             android:background="@color/colorPrimary"
             />
 
-        <TextView android:id="@+id/link_forgotpassword"
+        <TextView android:id="@+id/link_createnewuser"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Forgot password?"
+            android:text="Create New User"
             android:gravity="center"
             android:textSize="16dip"
             android:textColor="@color/button_material_dark"

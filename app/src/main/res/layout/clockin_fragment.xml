@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingRight="24dp"
+        android:weightSum="1">
 
         <mobiledev.unb.clockin.ClockView
             android:id="@+id/clock"
@@ -34,7 +35,6 @@
             android:layout_marginBottom="15dp"/>
 
         <TextView
-            android:text="2:00p.m. - 10:00p.m."
             android:id="@+id/shift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
             android:layout_marginBottom="40dp"
             android:textColor="#b22631"
             android:textStyle="bold"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            tools:text="7:20 PM - 6:00 PM\nMonday, Mar 13"/>
 
         <TextView
             android:text="Clock in by clicking button below"
@@ -56,8 +57,8 @@
             android:id="@+id/clockin_button"
             android:layout_width="194dip"
             android:layout_height="194dip"
-            android:src="@drawable/clock_red"
-            app:cb_color="#b22631"
+            android:src="@drawable/clock_green"
+            app:cb_color="#00FF00"
             app:cb_pressedRingWidth="8dip"
             android:padding="15dp"
             tools:cb_color="@color/color1"

@@ -37,8 +37,6 @@ public class PushNotificationFragment extends Fragment {
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
-
-        getPushNotificationToken();
     }
 
     @Override
@@ -65,9 +63,7 @@ public class PushNotificationFragment extends Fragment {
 
     private void sendPushNotification() {
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String token = preferences.getString(CustomVar.NOTIFICATION_TOKEN,"");
-        Log.i(TAG, "Sent token: " + token);
+        String token = FirebaseInstanceId.getInstance().getToken();
 
         EditText et = (EditText) getActivity().findViewById(R.id.editText);
         String body = et.getText().toString();
@@ -105,16 +101,12 @@ public class PushNotificationFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(req);
     }
 
-    private void getPushNotificationToken(){
+    private void setPushNotificationToken(){
 
         String tkn = FirebaseInstanceId.getInstance().getToken();
-        Toast.makeText(getActivity(), "Current token ["+tkn+"]",
-                Toast.LENGTH_LONG).show();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(CustomVar.NOTIFICATION_TOKEN, tkn);
-        editor.apply();
         Log.d(TAG, "Token ["+tkn+"]");
+
+        //update token via REST call
 
     }
 }

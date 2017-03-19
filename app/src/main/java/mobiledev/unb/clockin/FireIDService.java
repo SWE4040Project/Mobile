@@ -18,13 +18,6 @@ public class FireIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String tkn = FirebaseInstanceId.getInstance().getToken();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if( !preferences.getString(CustomVar.NOTIFICATION_TOKEN,"").equals(tkn)){
-            final SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(CustomVar.NOTIFICATION_TOKEN, tkn);
-            Log.d(TAG,"Generating NEW push notification token");
-        }
-        Log.d(TAG,"Token ["+tkn+"]");
+        Log.d(TAG,"NEW Token ["+tkn+"]");
     }
 }

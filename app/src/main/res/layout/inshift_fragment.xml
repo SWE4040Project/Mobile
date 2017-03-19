@@ -15,13 +15,37 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <mobiledev.unb.clockin.ClockView
-            android:id="@+id/clock2"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="45dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shiftStart"
+                android:layout_weight="0.94" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/shiftEnd"
+                android:layout_gravity="end"
+                android:textAlignment="textEnd" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_height="60dp"
+            android:padding="15dp"
+            android:layout_width="fill_parent"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@android:drawable/progress_horizontal"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,8 +63,8 @@
                 android:layout_marginRight="30dp"/>
 
             <TextView
-                android:text="Clocked in"
-                android:id="@+id/status_value"
+                android:text="Clocked in @\n 6:58 PM"
+                android:id="@+id/timesClocked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -51,34 +75,38 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <TextView
-                android:text="Clocked in times:"
-                android:id="@+id/textView3"
+                android:text="7:00 PM - 10:00 PM\n Monday, Mar 13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textSize="22sp"
-                android:layout_marginRight="30dp"/>
+                android:id="@+id/shift"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp" />
 
             <TextView
-                android:id="@+id/timesClocked"
-                android:maxLines="3"
-                android:scrollbars="vertical"
-                android:layout_gravity="center"
-                android:textSize="22sp"
-                android:layout_width="match_parent"
+                android:text="Shift:"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"/>
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textView3"
+                android:textSize="18sp" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -89,28 +117,42 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:textSize="22sp"
-                android:layout_marginRight="30dp"/>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_above="@+id/clockedNotes" />
 
             <at.markushi.ui.CircleButton
-                android:id="@+id/addnote_button"
-                android:layout_width="64dip"
-                android:layout_height="64dip"
-                android:src="@drawable/pencil"
-                app:cb_color="#787544"
+                android:id="@+id/clockout_button"
+                android:layout_width="94dip"
+                android:layout_height="94dip"
+                android:src="@drawable/clock_red"
+                app:cb_color="#FF0000"
                 app:cb_pressedRingWidth="8dip"
-                android:padding="10dp"
+                android:padding="12dp"
                 tools:cb_color="@color/color1"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-            </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <at.markushi.ui.CircleButton
+                android:id="@+id/inshift_button"
+                android:layout_width="94dip"
+                android:layout_height="94dip"
+                android:src="@drawable/cooler"
+                app:cb_color="#093573"
+                app:cb_pressedRingWidth="8dip"
+                android:padding="10.5dp"
+                tools:cb_color="@color/color1"
+                android:layout_gravity="center_horizontal"
+                android:elevation="0dp"
+                android:keepScreenOn="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
-                android:id="@+id/result"
+                android:id="@+id/clockedNotes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -121,45 +163,31 @@
                 android:background="#bdd6d7d7"
                 android:gravity="top"
                 android:isScrollContainer="false"
-                android:layout_marginRight="45dp"
-                android:inputType="none"/>
+                android:inputType="none"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/clockout_button"
+                android:layout_toStartOf="@+id/clockout_button"
+                android:layout_below="@+id/addnote_button" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <at.markushi.ui.CircleButton
+                android:id="@+id/addnote_button"
+                android:layout_width="64dip"
+                android:layout_height="64dip"
+                android:src="@drawable/pencil"
+                app:cb_color="#787544"
+                app:cb_pressedRingWidth="8dip"
+                android:padding="10dp"
+                tools:cb_color="@color/color1"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/textView4"
+                android:layout_toEndOf="@+id/textView4" />
 
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/inshift_button"
-                    android:layout_width="94dip"
-                    android:layout_height="94dip"
-                    android:src="@drawable/cooler"
-                    app:cb_color="#093573"
-                    app:cb_pressedRingWidth="8dip"
-                    android:padding="10.5dp"
-                    tools:cb_color="@color/color1"
-                    android:layout_gravity="center_horizontal"/>
-
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/clockout_button"
-                    android:layout_width="94dip"
-                    android:layout_height="94dip"
-                    android:src="@drawable/x"
-                    app:cb_color="#6b8795"
-                    app:cb_pressedRingWidth="8dip"
-                    android:padding="12dp"
-                    tools:cb_color="@color/color1"
-                    android:layout_gravity="center_horizontal"/>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-
-
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>
