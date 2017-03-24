@@ -57,10 +57,9 @@
             android:id="@+id/clockin_button"
             android:layout_width="194dip"
             android:layout_height="194dip"
-            android:src="@drawable/clock_green"
-            app:cb_color="#00FF00"
+            android:src="@drawable/clockin_button"
             app:cb_pressedRingWidth="8dip"
-            android:padding="15dp"
+            android:layout_margin="15dp"
             tools:cb_color="@color/color1"
             android:layout_gravity="center_horizontal"/>
 

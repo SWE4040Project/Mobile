@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
 
         setPushNotificationCall();
         loadClockinFragment();
-    }
 
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

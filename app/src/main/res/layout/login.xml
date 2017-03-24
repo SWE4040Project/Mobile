@@ -55,7 +55,7 @@
             android:text="Login"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:background="@color/colorPrimary"
-            />
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
         <TextView android:id="@+id/link_createnewuser"
             android:layout_width="fill_parent"

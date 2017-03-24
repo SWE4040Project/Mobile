@@ -10,11 +10,15 @@ package mobiledev.unb.clockin;
     import android.graphics.BitmapFactory;
     import android.os.Bundle;
     import android.preference.PreferenceManager;
+    import android.support.v7.app.ActionBar;
+    import android.support.v7.app.AppCompatActivity;
+    import android.support.v7.widget.Toolbar;
+    import android.view.MenuItem;
     import android.widget.ImageView;
 
     import java.io.File;
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,14 @@ public class CameraActivity extends Activity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final String mCurrentImagePath = preferences.getString(CustomVar.CLOCKIN_IMAGE_URL, "");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Show the Up button in the action bar.
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         File imgFile = new File(mCurrentImagePath);
 
@@ -35,6 +47,16 @@ public class CameraActivity extends Activity {
             myImage.setImageBitmap(myBitmap);
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

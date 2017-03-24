@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -54,6 +56,14 @@ public class ScheduleListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_list_activity);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Show the Up button in the action bar.
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
@@ -61,13 +71,8 @@ public class ScheduleListActivity extends AppCompatActivity {
         shiftList = new ArrayList<Shift>();
         populateShiftList();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
         recyclerView = (RecyclerView) findViewById(R.id.course_list);
         assert recyclerView != null;
-        //setupRecyclerView((RecyclerView) recyclerView);
 
     }
 
@@ -126,6 +131,16 @@ public class ScheduleListActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void showpDialog() {
