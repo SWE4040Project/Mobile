@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 
@@ -48,6 +50,7 @@ public class ScheduleListActivity extends AppCompatActivity {
     private final String ARG_ITEM_ID = "item_id";
     private ProgressDialog pDialog;
     private RecyclerView recyclerView;
+    int lastPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class ScheduleListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.course_list);
         assert recyclerView != null;
         //setupRecyclerView((RecyclerView) recyclerView);
+
+
 
     }
 
@@ -142,6 +147,7 @@ public class ScheduleListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(shiftList));
     }
 
+
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
@@ -151,10 +157,12 @@ public class ScheduleListActivity extends AppCompatActivity {
             mValues = items;
         }
 
+
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.schedule_list_content, parent, false);
+                    //.inflate(R.layout.row_layout, parent, false);
             Log.i(TAG,"onCreateViewHolder");
             return new ViewHolder(view);
         }
@@ -168,6 +176,8 @@ public class ScheduleListActivity extends AppCompatActivity {
             holder.mStartTime.setText("2:00 pm Feb 28th");
             holder.mEndTime.setText("10:00 pm Feb 28th");
 
+            holder.mDateBox.setText("28th");//Pull date from string
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,6 +188,21 @@ public class ScheduleListActivity extends AppCompatActivity {
                 context.startActivity(intent);
                 }
             });
+
+            setAnimation(holder.mView, position);
+
+        }
+
+        private void setAnimation(View viewToAnimate, int position)
+        {
+            // If the bound view wasn't previously displayed on screen, it's animated
+            if (position > lastPosition)
+            {
+
+                Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),R.anim.push_left_in);
+                viewToAnimate.startAnimation(animation);
+                lastPosition = position;
+            }
         }
 
         @Override
@@ -191,6 +216,7 @@ public class ScheduleListActivity extends AppCompatActivity {
             public final TextView mCompanyId;
             public final TextView mStartTime;
             public final TextView mEndTime;
+            public final TextView mDateBox;
             public Shift mItem;
 
             public ViewHolder(View view) {
@@ -200,6 +226,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                 mCompanyId = (TextView) view.findViewById(R.id.companyId);
                 mStartTime = (TextView) view.findViewById(R.id.start_time_id);
                 mEndTime = (TextView) view.findViewById(R.id.end_time_id);
+                mDateBox = (TextView) view.findViewById(R.id.day);
                 Log.i(TAG,"ViewHolder constructor");
             }
 

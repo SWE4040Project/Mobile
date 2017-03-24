@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-              android:layout_height="40dp"
-              android:orientation="horizontal"
-              android:weightSum="1"
-              tools:showIn="@layout/schedule_list">
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:cardView="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        cardView:cardCornerRadius="20dp"
+        cardView:cardElevation="0dp"
+        cardView:cardBackgroundColor="#9fffffff"
+        tools:showIn="@layout/schedule_list"
+        android:layout_marginTop="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
 
         <TextView
             android:text="Brent"
@@ -21,7 +33,33 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            tools:text="EmpName" />
+            android:layout_marginTop="5dp"
+            android:textSize="25sp"
+            android:textStyle="italic"
+            tools:text="EmpName"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed" />
+
+        <TextView
+            android:text="28th"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/day"
+            android:layout_below="@+id/name"
+            android:layout_toEndOf="@+id/name"
+            android:layout_toRightOf="@+id/name"
+            android:layout_alignLeft="@+id/name"
+            android:layout_alignStart="@+id/name"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp"
+            android:textSize="19sp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            android:textColor="#ffffff" />
 
         <TextView
             android:text="start"
@@ -33,7 +71,41 @@
             android:layout_toRightOf="@+id/name"
             android:layout_alignLeft="@+id/name"
             android:layout_alignStart="@+id/name"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="73dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16sp"
             tools:text="startTime" />
+
+        <TextView
+            android:text="-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to"
+            android:layout_below="@+id/name"
+            android:layout_toEndOf="@+id/start_time_id"
+            android:layout_toRightOf="@+id/start_time_id"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/end_time_id"
+            android:text="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_toRightOf="@+id/to"
+            android:layout_toEndOf="@+id/to"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            tools:text="endTime" />
 
         <TextView
             android:text="Company Id"
@@ -44,6 +116,7 @@
             android:layout_toEndOf="@+id/textView11"
             android:layout_marginLeft="65dp"
             android:layout_marginStart="65dp"
+            android:layout_marginTop="7dp"
             android:id="@+id/clockin_time"
             tools:text="Company Id" />
 
@@ -55,6 +128,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/textView11"
             android:layout_toRightOf="@+id/textView11"
+            android:layout_marginTop="7dp"
             tools:text=" ID" />
 
         <TextView
@@ -64,6 +138,7 @@
             android:layout_alignBottom="@+id/clockin_time"
             android:layout_toRightOf="@+id/clockin_time"
             android:layout_toEndOf="@+id/clockin_time"
+            android:layout_marginTop="7dp"
             android:id="@+id/companyId"
             tools:text=" ID" />
 
@@ -74,18 +149,11 @@
             android:id="@+id/textView11"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/name"
-            android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp"
-            tools:text="Emp Id" />
+            android:layout_marginLeft="78dp"
+            android:layout_marginStart="78dp"
+            android:layout_marginTop="7dp"
+            tools:text="Emp Id"
+            android:textColor="@color/common_google_signin_btn_text_light_default" />
 
-        <TextView
-            android:text="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/end_time_id"
-            android:layout_below="@+id/clockin_time"
-            android:layout_alignLeft="@+id/clockin_time"
-            android:layout_alignStart="@+id/clockin_time"
-            tools:text="endTime" />
     </RelativeLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>

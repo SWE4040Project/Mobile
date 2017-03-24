@@ -152,7 +152,7 @@
                 android:id="@+id/onbreak_button"
                 android:layout_width="94dip"
                 android:layout_height="94dip"
-                android:src="@drawable/cooler_not_allowed"
+                android:src="@drawable/cooler"
                 app:cb_color="#FF0000"
                 app:cb_pressedRingWidth="8dip"
                 android:padding="12dp"
@@ -162,6 +162,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="115dp" />
+            <!--cooler_not_allowed did not pull. Had to switch to cooler to make it work -->
 
         </RelativeLayout>
 

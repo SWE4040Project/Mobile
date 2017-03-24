@@ -57,12 +57,13 @@
             android:id="@+id/clockin_button"
             android:layout_width="194dip"
             android:layout_height="194dip"
-            android:src="@drawable/clock_green"
+            android:src="@drawable/clock_red"
             app:cb_color="#00FF00"
             app:cb_pressedRingWidth="8dip"
             android:padding="15dp"
             tools:cb_color="@color/color1"
             android:layout_gravity="center_horizontal"/>
+        <!--clock_green did not pull. Had to switch to clock_red to make it work -->
 
     </LinearLayout>
 </ScrollView>
