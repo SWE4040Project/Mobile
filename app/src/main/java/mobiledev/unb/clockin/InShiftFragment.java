@@ -205,8 +205,9 @@ public class InShiftFragment extends Fragment {
                             Log.i(TAG, e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
 
                     }
@@ -216,7 +217,9 @@ public class InShiftFragment extends Fragment {
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         hidepDialog();
                         Toast.makeText(getActivity(),
-                                "Network connection error. Please test network and try again.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 
@@ -241,8 +244,9 @@ public class InShiftFragment extends Fragment {
                             Log.i(TAG, e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -251,7 +255,9 @@ public class InShiftFragment extends Fragment {
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         hidepDialog();
                         Toast.makeText(getActivity(),
-                                "Network connection error. Please test network and try again.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 
@@ -276,8 +282,9 @@ public class InShiftFragment extends Fragment {
                             Log.i(TAG, e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -286,7 +293,9 @@ public class InShiftFragment extends Fragment {
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         hidepDialog();
                         Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 
@@ -322,8 +331,9 @@ public class InShiftFragment extends Fragment {
                             Log.i(TAG, e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -332,7 +342,9 @@ public class InShiftFragment extends Fragment {
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         hidepDialog();
                         Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 

@@ -1,5 +1,6 @@
 package mobiledev.unb.clockin;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -49,6 +51,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        String name = preferences.getString(CustomVar.EMPLOYEE_NAME,"name");
+        TextView empName = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_name);
+        TextView empEmail = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_email);
+        if(name!=null){
+            empName.setText(name);
+            empEmail.setText(name+"@tracker.ca");
+        }
         setPushNotificationCall();
         loadClockinFragment();
 
@@ -81,20 +93,24 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Log.i(TAG, "Logging out...");
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            final SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(CustomVar.AUTHORIZATION, null);
-            editor.putString(CustomVar.XSRF_TOKEN, null);
-            editor.apply();
-
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            logout(this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void logout(Activity activity) {
+        Log.i("Logout", "Logging out...");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(CustomVar.AUTHORIZATION, null);
+        editor.putString(CustomVar.XSRF_TOKEN, null);
+        editor.apply();
+
+        Intent intent = new Intent(activity, Login.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -119,12 +135,21 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_myshifts) {
             Log.i(TAG, "Load my shifts");
             Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            intent.putExtra("viewType", 2);
             startActivity(intent);
         } else if (id == R.id.nav_schedule) {
-            Log.i(TAG, "Load weekly schedule");
             Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            intent.putExtra("viewType", 0);
             startActivity(intent);
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_schedule_working) {
+            Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            intent.putExtra("viewType", 1);
+            startActivity(intent);
+        }else if (id == R.id.nav_schedule_worked) {
+            Intent intent = new Intent(MainActivity.this, ScheduleListActivity.class);
+            intent.putExtra("viewType", 3);
+            startActivity(intent);
+        }else if (id == R.id.nav_manage) {
             Log.i(TAG, "Selecting nav_manage");
             Intent intent = new Intent(MainActivity.this, TestRestActivity.class);
             startActivity(intent);
@@ -194,8 +219,9 @@ public class MainActivity extends AppCompatActivity
                         } catch (JSONException e) {
                             Log.i(TAG, e.getMessage());
                             Toast.makeText(getApplicationContext(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(MainActivity.this);
                         }
 
                         progressDialog.hide();
@@ -204,10 +230,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.hide();
-            }
+                Toast.makeText(getApplicationContext(),
+                        "Need to re-authenticate; logging out...",
+                        Toast.LENGTH_LONG).show();
+                MainActivity.logout(MainActivity.this);            }
         });
 
         // Adding request to request queue
@@ -250,7 +277,9 @@ public class MainActivity extends AppCompatActivity
                         Log.e(TAG,error.getStackTrace().toString());
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         Toast.makeText(getApplicationContext(),
-                                error.getMessage(), Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(MainActivity.this);
                     }
                 });
 

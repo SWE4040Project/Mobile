@@ -27,6 +27,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
+
 public class Login extends Activity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -59,68 +64,14 @@ public class Login extends Activity {
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
-                createNewUser();
+                //createNewUser();
+                Intent intent = new Intent(Login.this, CreateDemoUser.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void createNewUser() {
-
-        if (!validate()) {
-            onCreateFailed();
-            return;
-        }
-
-        _loginButton.setEnabled(false);
-        _createNewUser.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating...");
-        progressDialog.show();
-
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
-
-        final JSONObject params = new JSONObject();
-        try{
-            params.put("name", username);
-            params.put("password", password);
-        }catch(JSONException je){
-            je.printStackTrace();
-        }
-
-        JsonObjectRequest req = Rest.post(
-                this,
-                Rest.PATH_CREATE,
-                params,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "New User Created.");
-                        progressDialog.hide();
-                        try {
-                            onCreateSuccess((String)params.get("name"));
-                        }catch(JSONException je){
-                            onCreateFailed();
-                            je.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-                progressDialog.hide();
-                onCreateFailed();
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
-
-    }
-
-    public void login() {
+   public void login() {
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -170,6 +121,14 @@ public class Login extends Activity {
 
                         editor.putString(CustomVar.AUTHORIZATION, jwtToken);
                         editor.putString(CustomVar.XSRF_TOKEN, xToken);
+                        editor.apply();
+
+                        int i = jwtToken.lastIndexOf('.');
+                        String withoutSignature = jwtToken.substring(0, i+1);
+                        Jwt<Header,Claims> readToken = Jwts.parser().parseClaimsJwt(withoutSignature);
+                        Claims claims = readToken.getBody();
+                        String name = (String) claims.get(CustomVar.EMPLOYEE_NAME);
+                        editor.putString(CustomVar.EMPLOYEE_NAME, name);
                         editor.apply();
 
                     } catch (JSONException e) {

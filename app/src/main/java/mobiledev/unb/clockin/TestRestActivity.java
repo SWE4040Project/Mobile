@@ -120,8 +120,9 @@ public class TestRestActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(TestRestActivity.this);
                         }
 
                         hidepDialog();
@@ -130,9 +131,11 @@ public class TestRestActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
                 hidepDialog();
+                Toast.makeText(getApplicationContext(),
+                        "Need to re-authenticate; logging out...",
+                        Toast.LENGTH_LONG).show();
+                MainActivity.logout(TestRestActivity.this);
             }
         });
 
@@ -164,6 +167,10 @@ public class TestRestActivity extends AppCompatActivity {
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getApplicationContext(),
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(TestRestActivity.this);
                     }
                     hidepDialog();
                 }
@@ -172,6 +179,10 @@ public class TestRestActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
                 hidepDialog();
+                Toast.makeText(getApplicationContext(),
+                        "Need to re-authenticate; logging out...",
+                        Toast.LENGTH_LONG).show();
+                MainActivity.logout(TestRestActivity.this);
             }
         });
 

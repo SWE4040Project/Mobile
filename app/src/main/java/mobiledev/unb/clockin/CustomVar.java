@@ -11,4 +11,6 @@ public class CustomVar {
     public static final String CLOCKIN_IMAGE_URL = "clockin_image";
     public static final String LONGITUDE = "longitude";
     public static final String LATITUDE = "latitude";
+    public static final String EMPLOYEE_NAME = "employeeName";
+    public static final String NUM_CREATED = "numCreated";
 }

@@ -2,13 +2,12 @@ package mobiledev.unb.clockin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * An activity representing a single Course detail screen. This
@@ -32,6 +31,14 @@ public class ScheduleDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        TextView details = (TextView) findViewById(R.id.detail_view);
+        String a = "Shift: "+ getIntent().getExtras().getString("start")+" "+getIntent().getExtras().getString("end") + "\n\n";
+        a += "Clockin start: "+ getIntent().getExtras().getString("real_start") + "\n\n";
+        a += "Clockin end: "+ getIntent().getExtras().getString("real_end") + "\n\n";
+        a += "Shift notes: "+ getIntent().getExtras().getString("notes");
+
+        details.setText(a);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -67,7 +74,7 @@ public class ScheduleDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, ScheduleListActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

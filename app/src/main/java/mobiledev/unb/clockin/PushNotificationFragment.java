@@ -83,8 +83,9 @@ public class PushNotificationFragment extends Fragment {
                         } catch (Exception e) {
                             Log.i(TAG, e.getMessage());
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
 
                     }
@@ -93,20 +94,13 @@ public class PushNotificationFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         Toast.makeText(getActivity(),
-                                "Failed at this moment.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
-    }
-
-    private void setPushNotificationToken(){
-
-        String tkn = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Token ["+tkn+"]");
-
-        //update token via REST call
-
     }
 }
