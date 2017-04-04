@@ -256,7 +256,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                 holder.mIdView.setText(mValues.get(position).getTitle());
                 holder.mStartTime.setText(mValues.get(position).getScheduled_start_time());
                 holder.mEndTime.setText(mValues.get(position).getScheduled_end_time());
-                holder.mDateBox.setText(mValues.get(position).getDay());//Pull date from string
+                holder.mDateBox.setText(getSuffix(mValues.get(position).getDay()));//Pull date from string
                 holder.mMonth.setText(mValues.get(position).getMonth());
             }catch(NullPointerException e){
                 e.printStackTrace();
@@ -279,6 +279,21 @@ public class ScheduleListActivity extends AppCompatActivity {
 
             setAnimation(holder.mView, position);
 
+        }
+
+        private String getSuffix(String s){
+            int n = Integer.parseInt(s);
+            switch(n % 10){
+                case 1: s = s + "st";
+                    break;
+                case 2: s = s + "nd";
+                    break;
+                case 3: s = s + "rd";
+                    break;
+                default: s = s + "th";
+                    break;
+            }
+            return s;
         }
 
         private void setAnimation(View viewToAnimate, int position)

@@ -38,15 +38,18 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <ProgressBar
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
             android:id="@+id/progressBar"
-            android:layout_height="60dp"
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:indeterminateOnly="false"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            app:rcRadius="10dp"
+            app:rcBackgroundPadding="5dp"
+            app:rcReverse="false"
+            app:rcProgressColor="@color/colorAccent"
+            app:rcSecondaryProgressColor="@color/colorPrimary"
+            app:rcBackgroundColor="@color/common_google_signin_btn_text_light_disabled"
             android:progressDrawable="@android:drawable/progress_horizontal"
-            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-            android:layout_weight="0.94" />
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,8 +155,8 @@
                 android:id="@+id/onbreak_button"
                 android:layout_width="94dip"
                 android:layout_height="94dip"
-                android:src="@drawable/cooler"
-                app:cb_color="#FF0000"
+                android:src="@drawable/x"
+                app:cb_color="#6b8795"
                 app:cb_pressedRingWidth="8dip"
                 android:padding="12dp"
                 tools:cb_color="@color/color1"

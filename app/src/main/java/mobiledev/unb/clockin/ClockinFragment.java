@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class ClockinFragment extends Fragment implements
 
     View inflatedView = null;
     CircleButton clockin_button;
+    CircleButton clockin_button_disabled;
     Button button_location;
     private TextView shift;
 
@@ -107,7 +109,10 @@ public class ClockinFragment extends Fragment implements
 
         shift = (TextView) inflatedView.findViewById(R.id.shift);
         clockin_button = (CircleButton) inflatedView.findViewById(R.id.clockin_button);
+        clockin_button_disabled = (CircleButton) inflatedView.findViewById(R.id.clockin_button_disabled);
         clockin_button.setEnabled(false);
+        clockin_button_disabled.setEnabled(false);
+        clockin_button.setVisibility(View.GONE);
         setCurrentShift();
 
         mClock = (ClockView) inflatedView.findViewById(R.id.clock);
@@ -141,6 +146,8 @@ public class ClockinFragment extends Fragment implements
                             //current_time_textview.setText((String)response.get("current_time"));
 
                             clockin_button.setEnabled(true);
+                            clockin_button_disabled.setVisibility(View.VISIBLE);
+                            clockin_button_disabled.setVisibility(View.GONE);
                             clockin_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
