@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -149,6 +150,7 @@ public class InShiftFragment extends Fragment {
                                 e.printStackTrace();
                             }
                             progressBar.setProgress(progress);
+                            progressBar.setSecondaryProgress(getSecondaryProgress(progress));
                             timesClocked.setText("Clocked in at\n"+(String)response.get("actual_start"));
                             String currentNotes = "No Notes";
                             if(response.get("shift_notes") != null){

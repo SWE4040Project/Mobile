@@ -257,7 +257,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                 holder.mIdView.setText(mValues.get(position).getTitle());
                 holder.mStartTime.setText(mValues.get(position).getScheduled_start_time());
                 holder.mEndTime.setText(mValues.get(position).getScheduled_end_time());
-                holder.mDateBox.setText(mValues.get(position).getDay());//Pull date from string
+                holder.mDateBox.setText(getSuffix(mValues.get(position).getDay()));//Pull date from string
                 holder.mMonth.setText(mValues.get(position).getMonth());
                 if(mValues.get(position).getReal_start_time() != null ){
                     if(mValues.get(position).getReal_end_time() != null) {
