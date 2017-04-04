@@ -82,7 +82,7 @@
             android:text="-"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/to"
+            android:id="@+id/end_time_id"
             android:layout_below="@+id/name"
             android:layout_toEndOf="@+id/start_time_id"
             android:layout_toRightOf="@+id/start_time_id"
@@ -93,13 +93,12 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/end_time_id"
             android:text="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
-            android:layout_toRightOf="@+id/to"
-            android:layout_toEndOf="@+id/to"
+            android:layout_toRightOf="@+id/end_time_id"
+            android:layout_toEndOf="@+id/end_time_id"
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
@@ -108,52 +107,14 @@
             tools:text="endTime" />
 
         <TextView
-            android:text="Company Id"
+            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView11"
-            android:layout_toEndOf="@+id/textView11"
-            android:layout_marginLeft="65dp"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="7dp"
-            android:id="@+id/clockin_time"
-            tools:text="Company Id" />
-
-        <TextView
-            android:text="-"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/id"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/textView11"
-            android:layout_toRightOf="@+id/textView11"
-            android:layout_marginTop="7dp"
-            tools:text=" ID" />
-
-        <TextView
-            android:text="-"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/clockin_time"
-            android:layout_toRightOf="@+id/clockin_time"
-            android:layout_toEndOf="@+id/clockin_time"
-            android:layout_marginTop="7dp"
-            android:id="@+id/companyId"
-            tools:text=" ID" />
-
-        <TextView
-            android:text="Emp Id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView11"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/name"
-            android:layout_marginLeft="78dp"
-            android:layout_marginStart="78dp"
-            android:layout_marginTop="7dp"
-            tools:text="Emp Id"
-            android:textColor="@color/common_google_signin_btn_text_light_default" />
+            android:id="@+id/month"
+            android:layout_above="@+id/start_time_id"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="18dp" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

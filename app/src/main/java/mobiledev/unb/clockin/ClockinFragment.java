@@ -154,8 +154,9 @@ public class ClockinFragment extends Fragment implements
                             Log.i(TAG, e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
-                                    "Error: " + e.getMessage(),
+                                    "Need to re-authenticate; logging out...",
                                     Toast.LENGTH_LONG).show();
+                            MainActivity.logout(getActivity());
                         }
 
                     }
@@ -212,7 +213,9 @@ public class ClockinFragment extends Fragment implements
                         VolleyLog.e(TAG, "Error: " + error.getMessage());
                         hidepDialog();
                         Toast.makeText(getActivity(),
-                                "Clock in did not succeed. Check your shifts and try again.", Toast.LENGTH_SHORT).show();
+                                "Need to re-authenticate; logging out...",
+                                Toast.LENGTH_LONG).show();
+                        MainActivity.logout(getActivity());
                     }
                 });
 

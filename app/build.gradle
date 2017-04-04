@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 repositories {
@@ -39,7 +43,7 @@ dependencies {
     compile 'com.xenione.libs:tab-digit:1.0.2'
     compile 'com.android.support:recyclerview-v7:24.1.0'
     compile 'com.android.support:cardview-v7:24.1.0'
-
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

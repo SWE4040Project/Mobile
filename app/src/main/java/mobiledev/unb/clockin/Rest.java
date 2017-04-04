@@ -39,7 +39,7 @@ public class Rest {
     public static final String PATH_CREATE = BASE_URL + "create/employee";
     public static final String PATH_TEST_AUTH = BASE_URL + "clockin/testauth";
     public static final String PATH_JSON = BASE_URL + "json";
-    public static final String PATH_SCHEDULE = BASE_URL + "calendar/load";
+    public static final String PATH_SCHEDULE = BASE_URL + "calendar/mobile/load";
     public static final String PATH_PUSH_NOTIFICATION = BASE_URL + "pushnote?token=";
     public static final String PATH_EMPLOYEE_TOKEN = BASE_URL + "employee/pushnote/edit";
 
@@ -137,6 +137,4 @@ public class Rest {
 
         return req;
     }
-
-
 }

@@ -38,22 +38,27 @@
         </activity>
         <activity
             android:name="mobiledev.unb.clockin.TestRestActivity"
-            android:label="@string/app_name"
+            android:label="Testing REST API"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name="mobiledev.unb.clockin.ScheduleListActivity"
-            android:label="@string/app_name"
+            android:label="Schedule"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name="mobiledev.unb.clockin.ScheduleDetailActivity"
-            android:label="@string/app_name"
+            android:label="Schedule Details"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name="mobiledev.unb.clockin.CameraActivity"
-            android:label="@string/app_name"
+            android:label="Last Clockin Image"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="mobiledev.unb.clockin.CreateDemoUser"
+            android:label="Create Demo User"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <service

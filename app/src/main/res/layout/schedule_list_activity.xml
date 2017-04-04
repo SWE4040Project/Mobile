@@ -19,6 +19,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/AppTheme.AppBarOverlay"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
@@ -29,7 +32,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/schedule_list"/>
+        <include layout="@layout/schedule_list" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
