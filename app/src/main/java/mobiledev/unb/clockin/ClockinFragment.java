@@ -1,6 +1,7 @@
 package mobiledev.unb.clockin;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -55,6 +57,7 @@ public class ClockinFragment extends Fragment implements
 
     View inflatedView = null;
     CircleButton clockin_button;
+    CircleButton clockin_button_disabled;
     Button button_location;
     private TextView shift;
 
@@ -67,6 +70,9 @@ public class ClockinFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest locationRequest;
+    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+
     TextView  mLatitudeText;
     TextView mLongitudeText;
     private ClockView mClock;
@@ -86,11 +92,34 @@ public class ClockinFragment extends Fragment implements
         }
 
         // Create the location client to start receiving updates
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).build();
+        buildGoogleApiClient();
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (ClockinFragmentScreenListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ClockinScreenListener");
+        }
+
+        // Create the location client to start receiving updates
+        buildGoogleApiClient();
+    }
+
+    /**
+     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     @Override
@@ -107,7 +136,10 @@ public class ClockinFragment extends Fragment implements
 
         shift = (TextView) inflatedView.findViewById(R.id.shift);
         clockin_button = (CircleButton) inflatedView.findViewById(R.id.clockin_button);
+        clockin_button_disabled = (CircleButton) inflatedView.findViewById(R.id.clockin_button_disabled);
         clockin_button.setEnabled(false);
+        clockin_button_disabled.setEnabled(false);
+        clockin_button.setVisibility(View.GONE);
         setCurrentShift();
 
         mClock = (ClockView) inflatedView.findViewById(R.id.clock);
@@ -141,6 +173,8 @@ public class ClockinFragment extends Fragment implements
                             //current_time_textview.setText((String)response.get("current_time"));
 
                             clockin_button.setEnabled(true);
+                            clockin_button_disabled.setVisibility(View.VISIBLE);
+                            clockin_button_disabled.setVisibility(View.GONE);
                             clockin_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -200,7 +234,7 @@ public class ClockinFragment extends Fragment implements
                             hidepDialog();
                             mCallback.onReplaceFragmentAction(new InShiftFragment());
                         } catch (Exception e) {
-                            Log.i(TAG, e.getMessage());
+                            Log.i(TAG, "Error "+e.getMessage());
                             hidepDialog();
                             Toast.makeText(getActivity(),
                                     "Error: " + e.getMessage(),
@@ -228,14 +262,25 @@ public class ClockinFragment extends Fragment implements
         if ( ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             return;
         }else{
-            Log.i(TAG, "permission true ");
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
-            if(mLastLocation != null) {
-                Log.i(TAG, "Getting location = " + mLastLocation.toString());
-            }else{
-                LocationServices.FusedLocationApi.requestLocationUpdates(
-                        mGoogleApiClient, locationRequest, this);
+            if(mGoogleApiClient.isConnected()) {
+                Log.i(TAG, "permission true ");
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    Log.i(TAG, "Getting location = " + mLastLocation.toString());
+                } else {
+                    Toast.makeText(getActivity(),
+                            "Make sure GPS Locationing is turned on!!",
+                            Toast.LENGTH_LONG).show();
+                    //remove location updates so that it resets
+                    LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+                    // Create the location request
+                    locationRequest = LocationRequest.create()
+                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                            .setInterval(UPDATE_INTERVAL)
+                            .setFastestInterval(FASTEST_INTERVAL);
+                    LocationServices.FusedLocationApi.requestLocationUpdates(
+                            mGoogleApiClient, locationRequest, this);
+                }
             }
         }
         if (mLastLocation != null) {
@@ -265,11 +310,11 @@ public class ClockinFragment extends Fragment implements
     }
     @Override
     public void onConnected(Bundle connectionHint) {
-        if ( ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            Log.i(TAG, "permission = " + ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) );
+        if ( ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(
                     getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
     }
@@ -285,16 +330,20 @@ public class ClockinFragment extends Fragment implements
     }
 
     public void onStart() {
-        mGoogleApiClient.connect();
         super.onStart();
+        if(mGoogleApiClient != null){
+            mGoogleApiClient.connect();
+        }
     }
 
     public void onStop() {
+        super.onStop();
         // Disconnecting the client invalidates it.
         Log.i(TAG, "onStop called. mGoogleApiClient stopped.");
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        mGoogleApiClient.disconnect();
-        super.onStop();
+        if(mGoogleApiClient != null){
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -319,6 +368,7 @@ public class ClockinFragment extends Fragment implements
 
     public void dispatchTakePictureIntent() {
         Log.i(TAG,"Camera - dispatchTakePictureIntent");
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -331,13 +381,21 @@ public class ClockinFragment extends Fragment implements
                 // Error occurred while creating the File
                 Log.i(TAG,ex.getMessage());
             }
-            // Continue only if the File was successfully created
+            /*// Continue only if the File was successfully created
+            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT){
+                Intent it = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(it, REQUEST_TAKE_PHOTO);
+            }else*/
             if (photoFile != null) {
                 Log.i(TAG,"photoFile not null.");
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
                         "mobiledev.unb.clockin.fileprovider",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                }else{
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, "content:/mobiledev.unb.clockin/");
+                }
                 Log.i(TAG,"photoURI " + photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }

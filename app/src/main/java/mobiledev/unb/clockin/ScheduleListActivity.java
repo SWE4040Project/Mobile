@@ -3,6 +3,7 @@ package mobiledev.unb.clockin;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -258,6 +259,19 @@ public class ScheduleListActivity extends AppCompatActivity {
                 holder.mEndTime.setText(mValues.get(position).getScheduled_end_time());
                 holder.mDateBox.setText(mValues.get(position).getDay());//Pull date from string
                 holder.mMonth.setText(mValues.get(position).getMonth());
+                if(mValues.get(position).getReal_start_time() != null ){
+                    if(mValues.get(position).getReal_end_time() != null) {
+                        TextView box = (TextView) holder.mView.findViewById(R.id.day);
+                        if (box != null) {
+                            box.setBackgroundColor(Color.parseColor("#757575"));
+                        }
+                    }else{
+                        TextView box = (TextView) holder.mView.findViewById(R.id.day);
+                        if (box != null) {
+                            box.setBackgroundColor(Color.parseColor("#FFC107"));
+                        }
+                    }
+                }
             }catch(NullPointerException e){
                 e.printStackTrace();
             }
@@ -279,6 +293,21 @@ public class ScheduleListActivity extends AppCompatActivity {
 
             setAnimation(holder.mView, position);
 
+        }
+
+        private String getSuffix(String s){
+            int n = Integer.parseInt(s);
+            switch(n % 10){
+                case 1: s = s + "st";
+                    break;
+                case 2: s = s + "nd";
+                    break;
+                case 3: s = s + "rd";
+                    break;
+                default: s = s + "th";
+                    break;
+            }
+            return s;
         }
 
         private void setAnimation(View viewToAnimate, int position)

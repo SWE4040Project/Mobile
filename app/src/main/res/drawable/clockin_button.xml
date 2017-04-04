@@ -1,6 +1,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:state_enabled="false"
-        android:drawable="@drawable/clock_disabled"/>
+        android:drawable="@drawable/clock_clockin_disabled" />
     <item android:state_enabled="true"
-        android:drawable="@drawable/clock_green"/> <!-- idle state -->
+        android:drawable="@drawable/clock_clockin" /> <!-- idle state -->
 </selector>

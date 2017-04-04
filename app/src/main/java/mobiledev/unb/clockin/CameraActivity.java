@@ -15,6 +15,7 @@ package mobiledev.unb.clockin;
     import android.support.v7.widget.Toolbar;
     import android.view.MenuItem;
     import android.widget.ImageView;
+    import android.widget.Toast;
 
     import java.io.File;
 
@@ -46,6 +47,8 @@ public class CameraActivity extends AppCompatActivity {
 
             myImage.setImageBitmap(myBitmap);
 
+        }else{
+            Toast.makeText(CameraActivity.this,"Image saving not supported on this device.",Toast.LENGTH_LONG);
         }
     }
 

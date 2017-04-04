@@ -1,5 +1,6 @@
 package mobiledev.unb.clockin;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -24,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.markushi.ui.CircleButton;
+
+import static mobiledev.unb.clockin.InShiftFragment.getSecondaryProgress;
 
 /**
  * Created by Brent on 2017-02-13.
@@ -41,7 +45,7 @@ public class OnBreakFragment extends Fragment {
     private TextView shiftEnd;
     private ProgressDialog pDialog;
     private String notes;
-    private ProgressBar progressBar;
+    private RoundCornerProgressBar progressBar;
 
     final String TAG = OnBreakFragment.class.getSimpleName();
 
@@ -62,6 +66,19 @@ public class OnBreakFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (ClockinFragmentScreenListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ClockinScreenListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -70,7 +87,7 @@ public class OnBreakFragment extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        progressBar = (ProgressBar)inflatedView.findViewById(R.id.progressBar);
+        progressBar = (RoundCornerProgressBar)inflatedView.findViewById(R.id.progressBar);
 
         timesClocked =(TextView)inflatedView.findViewById(R.id.timesClocked);
         clockedNotes = (TextView)inflatedView.findViewById(R.id.clockedNotes);
@@ -124,6 +141,7 @@ public class OnBreakFragment extends Fragment {
                                 e.printStackTrace();
                             }
                             progressBar.setProgress(progress);
+                            progressBar.setSecondaryProgress(getSecondaryProgress(progress));
                             timesClocked.setText("On Break - clocked in at\n"+(String)response.get("actual_start"));
                             String currentNotes = "No Notes";
                             if(response.get("shift_notes") != null){

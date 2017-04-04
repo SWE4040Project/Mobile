@@ -1,5 +1,6 @@
 package mobiledev.unb.clockin;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -42,7 +44,10 @@ public class InShiftFragment extends Fragment {
     private TextView shift;
     private ProgressDialog pDialog;
     private String notes;
-    private ProgressBar progressBar;
+    private RoundCornerProgressBar progressBar;
+    private static int secondaryProgress;
+    private static int overage = 0;
+
 
     final String TAG = InShiftFragment.class.getSimpleName();
 
@@ -63,6 +68,19 @@ public class InShiftFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (ClockinFragmentScreenListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ClockinScreenListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -71,7 +89,8 @@ public class InShiftFragment extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        progressBar = (ProgressBar)inflatedView.findViewById(R.id.progressBar);
+        progressBar = (RoundCornerProgressBar)inflatedView.findViewById(R.id.progressBar);
+
 
         timesClocked =(TextView)inflatedView.findViewById(R.id.timesClocked);
         clockedNotes = (TextView)inflatedView.findViewById(R.id.clockedNotes);
@@ -225,6 +244,12 @@ public class InShiftFragment extends Fragment {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
+    }
+
+    public static int getSecondaryProgress(int primaryProgress){
+        overage += 1 + (int)(Math.random() * ((7 - 1) + 1));
+        secondaryProgress = primaryProgress + overage;
+        return secondaryProgress;
     }
 
     private void breakinCall() {

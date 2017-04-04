@@ -60,8 +60,21 @@
             android:src="@drawable/clockin_button"
             app:cb_pressedRingWidth="8dip"
             android:layout_margin="15dp"
-            tools:cb_color="@color/color1"
-            android:layout_gravity="center_horizontal"/>
+            app:cb_color="@color/active"
+            android:layout_gravity="center_horizontal"
+            android:padding="12.5dp"/>
+
+        <at.markushi.ui.CircleButton
+            android:id="@+id/clockin_button_disabled"
+            android:layout_width="194dip"
+            android:layout_height="194dip"
+            android:src="@drawable/clock_clockin_disabled"
+            app:cb_pressedRingWidth="8dip"
+            android:layout_margin="15dp"
+            app:cb_color="@color/inactive"
+            android:layout_gravity="center_horizontal"
+            android:padding="12.5dp"/>
+
 
     </LinearLayout>
 </ScrollView>

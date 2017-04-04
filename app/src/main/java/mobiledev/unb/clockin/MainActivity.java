@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity
                                     break;
                             }
 
+                            progressDialog.hide();
                             onReplaceFragmentAction(newFragment);
 
                         } catch (JSONException e) {
@@ -223,8 +224,6 @@ public class MainActivity extends AppCompatActivity
                                     Toast.LENGTH_LONG).show();
                             MainActivity.logout(MainActivity.this);
                         }
-
-                        progressDialog.hide();
                     }
                 }, new Response.ErrorListener() {
             @Override
