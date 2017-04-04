@@ -46,6 +46,7 @@ public class InShiftFragment extends Fragment {
     private String notes;
     private RoundCornerProgressBar progressBar;
     private static int secondaryProgress;
+    private TextView times;
     private static int overage = 0;
 
 

@@ -42,6 +42,7 @@ public class OnBreakFragment extends Fragment {
     private TextView shift;
     private TextView shiftStart;
     private TextView shiftEnd;
+    private TextView times;
     private ProgressDialog pDialog;
     private String notes;
     private RoundCornerProgressBar progressBar;
@@ -76,6 +77,7 @@ public class OnBreakFragment extends Fragment {
         progressBar = (RoundCornerProgressBar)inflatedView.findViewById(R.id.progressBar);
 
         timesClocked =(TextView)inflatedView.findViewById(R.id.timesClocked);
+        times = (TextView) inflatedView.findViewById(R.id.times);
         clockedNotes = (TextView)inflatedView.findViewById(R.id.clockedNotes);
         shift = (TextView) inflatedView.findViewById(R.id.shift);
         shiftStart = (TextView) inflatedView.findViewById(R.id.shiftStart);
@@ -114,7 +116,7 @@ public class OnBreakFragment extends Fragment {
                                 "current_time":"6:45 PM"}*/
 
                             shift.setText(response.get("scheduled_start") + " - " + response.get("scheduled_end")
-                                    + "\n" + (String)response.get("scheduled_day"));
+                                    + " - " + (String)response.get("scheduled_day"));
                             shiftStart.setText((String)response.get("scheduled_start"));
                             shiftEnd.setText((String)response.get("scheduled_end"));
                             int progress = 0;
@@ -128,7 +130,8 @@ public class OnBreakFragment extends Fragment {
                             }
                             progressBar.setProgress(progress);
                             progressBar.setSecondaryProgress(getSecondaryProgress(progress));
-                            timesClocked.setText("On Break - clocked in at\n"+(String)response.get("actual_start"));
+                            timesClocked.setText("On Break");
+                            times.setText("Clocked in at: "+(String)response.get("actual_start"));
                             String currentNotes = "No Notes";
                             if(response.get("shift_notes") != null){
                                 currentNotes = (String)response.get("shift_notes");

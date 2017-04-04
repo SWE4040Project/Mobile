@@ -146,14 +146,14 @@ public class ClockinFragment extends Fragment implements
                             //current_time_textview.setText((String)response.get("current_time"));
 
                             clockin_button.setEnabled(true);
-                            clockin_button_disabled.setVisibility(View.VISIBLE);
+                            clockin_button.setVisibility(View.VISIBLE);
                             clockin_button_disabled.setVisibility(View.GONE);
                             clockin_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Log.i(TAG, "clockin_button activated. Go to in_shift");
                                     // Send the event to the host activity
-                                    setCoarseLocation();
+                                    //setCoarseLocation();
                                 }
                             });
                             hidepDialog();
